@@ -4,7 +4,6 @@
 
 plugins {
     java
-    `maven-publish`
 }
 
 repositories {
@@ -27,13 +26,13 @@ dependencies {
 group = "groupId"
 version = "1.0-SNAPSHOT"
 description = "Portfolio"
-java.sourceCompatibility = JavaVersion.VERSION_16
 
-publishing {
-    publications.create<MavenPublication>("maven") {
-        from(components["java"])
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
+
 
 tasks.named<Test>("test") {
     useTestNG()
