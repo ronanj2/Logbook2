@@ -1,0 +1,134 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MarketClient</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.marketapi.abstraction</a>
+</div>
+
+<h1>Coverage Summary for Class: MarketClient (com.lyit.csd.marketapi.abstraction)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">MarketClient</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.marketapi.abstraction;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.lyit.csd.domain.AssetQuote;
+<i class="no-highlight">4</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">5</i>&nbsp;import java.util.List;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;/**
+<i class="no-highlight">8</i>&nbsp; * This interface displays the asset quote and symbol, including which stock are
+<i class="no-highlight">9</i>&nbsp; * trending segmented by region. Asset history, including exchange information
+<i class="no-highlight">10</i>&nbsp; * the current and past values.
+<i class="no-highlight">11</i>&nbsp; */
+<i class="no-highlight">12</i>&nbsp;public interface MarketClient {
+<i class="no-highlight">13</i>&nbsp;  /** Get an {@link AssetQuote} from an exchange.
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;   * @param assetSymbol is the asset symbol to get a quote for.
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;   * @return an {@link AssetQuote}.
+<i class="no-highlight">18</i>&nbsp;   */
+<i class="no-highlight">19</i>&nbsp;  AssetQuote getQuote(String assetSymbol);
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;  /** Gets a list of {@link AssetQuote} from an exchange.
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;   * @param assetSymbols is a list of asset symbols to get quotes for.
+<i class="no-highlight">24</i>&nbsp;
+<i class="no-highlight">25</i>&nbsp;   * @return a list of {@link AssetQuote}.
+<i class="no-highlight">26</i>&nbsp;   */
+<i class="no-highlight">27</i>&nbsp;  List&lt;AssetQuote&gt; getQuote(List&lt;String&gt; assetSymbols);
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;  /** Gets a list of trending stocks for a region from an exchange.
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;   * @param region is the region to look up.
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;   * @return an array of asset symbols.
+<i class="no-highlight">34</i>&nbsp;   */
+<i class="no-highlight">35</i>&nbsp;  ArrayList&lt;String&gt; getTrendingStocksForRegion(String region);
+<i class="no-highlight">36</i>&nbsp;
+<i class="no-highlight">37</i>&nbsp;  /**
+<i class="no-highlight">38</i>&nbsp;   * Method to retrieve historic data regarding provided
+<i class="no-highlight">39</i>&nbsp;   * stock tickers between predefined time interval and range.
+<i class="no-highlight">40</i>&nbsp;   *
+<i class="no-highlight">41</i>&nbsp;   * @param assetSymbols list of stock tickers
+<i class="no-highlight">42</i>&nbsp;   * @param interval granularity of the returned data.
+<i class="no-highlight">43</i>&nbsp;   * @param range time period of which data is to be gathered.
+<i class="no-highlight">44</i>&nbsp;   * @return list of {@link AssetQuote} objects containing individual stock histories.
+<i class="no-highlight">45</i>&nbsp;   */
+<i class="no-highlight">46</i>&nbsp;  List&lt;AssetQuote&gt; getHistoricalInfo(List&lt;String&gt; assetSymbols, String interval,
+<i class="no-highlight">47</i>&nbsp;                                     String range);
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;  /**
+<i class="no-highlight">50</i>&nbsp;   * Returns information regarding the specified exchange and region.
+<i class="no-highlight">51</i>&nbsp;   *
+<i class="no-highlight">52</i>&nbsp;   * @param region region where exchange is located.
+<i class="no-highlight">53</i>&nbsp;   * @param exchange the exchange to return data on.
+<i class="no-highlight">54</i>&nbsp;   * @return A string containing relevant information
+<i class="no-highlight">55</i>&nbsp;   */
+<i class="no-highlight">56</i>&nbsp;  String getExchangeInfo(String region, String exchange);
+<i class="no-highlight">57</i>&nbsp;
+<i class="no-highlight">58</i>&nbsp;  /** Checks if an asset symbol is valid or real or exists in an exchange.
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;   * @param assetSymbol is the ass
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;   * @return a boolean indicating whether asset is valid.
+<i class="no-highlight">63</i>&nbsp;   */
+<i class="no-highlight">64</i>&nbsp;  boolean checkAssetSymbol(String assetSymbol);
+<i class="no-highlight">65</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>

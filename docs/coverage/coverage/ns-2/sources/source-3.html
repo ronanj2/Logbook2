@@ -1,0 +1,190 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DateTimeHelper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: DateTimeHelper (com.lyit.csd.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DateTimeHelper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93.3%
+  </span>
+  <span class="absValue">
+    (14/15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.domain;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.time.Instant;
+<i class="no-highlight">4</i>&nbsp;import java.time.LocalDate;
+<i class="no-highlight">5</i>&nbsp;import java.time.ZoneId;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;/**
+<i class="no-highlight">8</i>&nbsp; * {@link PortfolioSystem} class provides from useful helpers for dealing with epoch conversion
+<i class="no-highlight">9</i>&nbsp; * between long and human-readable strings.
+<i class="no-highlight">10</i>&nbsp; */
+<b class="nc"><i class="no-highlight">11</i>&nbsp;public class DateTimeHelper {</b>
+<i class="no-highlight">12</i>&nbsp;  /**
+<i class="no-highlight">13</i>&nbsp;   * Get the current epoch time in milliseconds.
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;   * @return a &lt;code&gt;long&lt;/code&gt;.
+<i class="no-highlight">16</i>&nbsp;   */
+<i class="no-highlight">17</i>&nbsp;  public static long getCurrentEpochTime() {
+<b class="fc"><i class="no-highlight">18</i>&nbsp;    return Instant.now().toEpochMilli();</b>
+<i class="no-highlight">19</i>&nbsp;  }
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;  /**
+<i class="no-highlight">22</i>&nbsp;   * Converts a {@link LocalDate} to epoch milliseconds.
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;   * @param localDate is the input to convert.
+<i class="no-highlight">25</i>&nbsp;   * @return a &lt;code&gt;long&lt;/code&gt; representing the {@link LocalDate} in epoch milliseconds.
+<i class="no-highlight">26</i>&nbsp;   */
+<i class="no-highlight">27</i>&nbsp;  public static long convertToEpochMilliseconds(LocalDate localDate) {
+<b class="fc"><i class="no-highlight">28</i>&nbsp;    Instant instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant();</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;    long timeInMillis = instant.toEpochMilli();</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;    return timeInMillis;</b>
+<i class="no-highlight">31</i>&nbsp;  }
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;  /**
+<i class="no-highlight">34</i>&nbsp;   * Get the epoch milliseconds for a provided date.
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;   * @param year the year
+<i class="no-highlight">37</i>&nbsp;   * @param month the month
+<i class="no-highlight">38</i>&nbsp;   * @param day the day
+<i class="no-highlight">39</i>&nbsp;   * @return a &lt;code&gt;long&lt;/code&gt; representing the input in epoch milliseconds.
+<i class="no-highlight">40</i>&nbsp;   */
+<i class="no-highlight">41</i>&nbsp;  public static long getEpochMillisecondsForDate(int year, int month, int day) {
+<b class="fc"><i class="no-highlight">42</i>&nbsp;    return convertToEpochMilliseconds(LocalDate.of(year, month, day));</b>
+<i class="no-highlight">43</i>&nbsp;  }
+<i class="no-highlight">44</i>&nbsp;
+<i class="no-highlight">45</i>&nbsp;  /**
+<i class="no-highlight">46</i>&nbsp;   * Gets a human-readable String for epoch.
+<i class="no-highlight">47</i>&nbsp;
+<i class="no-highlight">48</i>&nbsp;   * @param timestamp inputted epoch in milliseconds.
+<i class="no-highlight">49</i>&nbsp;   * @return a &lt;code&gt;String&lt;/code&gt; representation of the inputted timestamp.
+<i class="no-highlight">50</i>&nbsp;   */
+<i class="no-highlight">51</i>&nbsp;  public static String getEpochAsHumanReadable(long timestamp) {
+<b class="fc"><i class="no-highlight">52</i>&nbsp;    String date = new java.text.SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;)</b>
+<b class="fc"><i class="no-highlight">53</i>&nbsp;        .format(new java.util.Date(timestamp));</b>
+<b class="fc"><i class="no-highlight">54</i>&nbsp;    return date;</b>
+<i class="no-highlight">55</i>&nbsp;  }
+<i class="no-highlight">56</i>&nbsp;
+<i class="no-highlight">57</i>&nbsp;  /**
+<i class="no-highlight">58</i>&nbsp;   * Get a {@link LocalDate} for inputted epoch timestamp.
+<i class="no-highlight">59</i>&nbsp;
+<i class="no-highlight">60</i>&nbsp;   * @param timestamp inputted epoch milliseconds.
+<i class="no-highlight">61</i>&nbsp;   * @return a &lt;code&gt;LocalDate&lt;/code&gt;.
+<i class="no-highlight">62</i>&nbsp;   */
+<i class="no-highlight">63</i>&nbsp;  public static LocalDate getDateFromEpochMilli(long timestamp) {
+<b class="fc"><i class="no-highlight">64</i>&nbsp;    LocalDate date = Instant.ofEpochMilli(timestamp).atZone(ZoneId.systemDefault()).toLocalDate();</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;    return date;</b>
+<i class="no-highlight">66</i>&nbsp;  }
+<i class="no-highlight">67</i>&nbsp;
+<i class="no-highlight">68</i>&nbsp;  /**
+<i class="no-highlight">69</i>&nbsp;   * Check if inputted epoch falls between two provided epoch. Typically, it is
+<i class="no-highlight">70</i>&nbsp;   * used to check if a value falls between two dates.
+<i class="no-highlight">71</i>&nbsp;
+<i class="no-highlight">72</i>&nbsp;   * @param inputTimestamp the value to check
+<i class="no-highlight">73</i>&nbsp;   * @param minimumTimestamp the minimum value to compare the input with
+<i class="no-highlight">74</i>&nbsp;   * @param maximumTimestamp the maximum value to compare the input with.
+<i class="no-highlight">75</i>&nbsp;   * @return a &lt;code&gt;boolean&lt;/code&gt; to indicate whether the input is in the range.
+<i class="no-highlight">76</i>&nbsp;   */
+<i class="no-highlight">77</i>&nbsp;  public static boolean isEpochInDateRange(long inputTimestamp,
+<i class="no-highlight">78</i>&nbsp;                                           long minimumTimestamp, long maximumTimestamp) {
+<b class="fc"><i class="no-highlight">79</i>&nbsp;    LocalDate inputDate = DateTimeHelper.getDateFromEpochMilli(inputTimestamp);</b>
+<b class="fc"><i class="no-highlight">80</i>&nbsp;    LocalDate minDate = DateTimeHelper.getDateFromEpochMilli(minimumTimestamp);</b>
+<b class="fc"><i class="no-highlight">81</i>&nbsp;    LocalDate maxDate = DateTimeHelper.getDateFromEpochMilli(maximumTimestamp);</b>
+<i class="no-highlight">82</i>&nbsp;
+<b class="fc"><i class="no-highlight">83</i>&nbsp;    return inputDate.isAfter(minDate) &amp;&amp; inputDate.isBefore(maxDate);</b>
+<i class="no-highlight">84</i>&nbsp;  }
+<i class="no-highlight">85</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>

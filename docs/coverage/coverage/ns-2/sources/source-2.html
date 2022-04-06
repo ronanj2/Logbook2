@@ -1,0 +1,305 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AssetQuote</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: AssetQuote (com.lyit.csd.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AssetQuote</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58.3%
+  </span>
+  <span class="absValue">
+    (7/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    56.7%
+  </span>
+  <span class="absValue">
+    (17/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.domain;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import java.text.Format;
+<i class="no-highlight">4</i>&nbsp;import java.text.SimpleDateFormat;
+<i class="no-highlight">5</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">6</i>&nbsp;import java.util.Date;
+<i class="no-highlight">7</i>&nbsp;import java.util.List;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;/**
+<i class="no-highlight">10</i>&nbsp; * The {@link AssetQuote} class used to hold pricing information of Assets, this includes.
+<i class="no-highlight">11</i>&nbsp; * MarketPrice, MarketChangePercentage, MarketChange and MarketPreviousClose values.
+<i class="no-highlight">12</i>&nbsp; */
+<i class="no-highlight">13</i>&nbsp;public class AssetQuote {
+<i class="no-highlight">14</i>&nbsp;  /* You should implement relevant methods for the class. You can add additional attributes to
+<i class="no-highlight">15</i>&nbsp;   * store additional information on each asset if you wish. Carefully consider the information that
+<i class="no-highlight">16</i>&nbsp;   * you can retrieve from the finance API that you use and what information the user would like to
+<i class="no-highlight">17</i>&nbsp;   * view or may find useful */
+<i class="no-highlight">18</i>&nbsp;
+<b class="fc"><i class="no-highlight">19</i>&nbsp;  private final List&lt;Long&gt; timestamp = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">20</i>&nbsp;
+<b class="fc"><i class="no-highlight">21</i>&nbsp;  private final List&lt;Double&gt; close = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;  /**
+<i class="no-highlight">24</i>&nbsp;   * The symbol of the asset e.g. APPL, TSLA, BARC or BTC-USD.
+<i class="no-highlight">25</i>&nbsp;   */
+<i class="no-highlight">26</i>&nbsp;  private final String assetSymbol;
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;  /**
+<i class="no-highlight">29</i>&nbsp;   * The UNIX timestamp of the asset&#39;s quoted value. Using long instead of int to avoid the year
+<i class="no-highlight">30</i>&nbsp;   * 2038 problem.
+<i class="no-highlight">31</i>&nbsp;   */
+<i class="no-highlight">32</i>&nbsp;  private long timeStamp;
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;  /**
+<i class="no-highlight">35</i>&nbsp;   * The value in USD of the named asset at this point in time.
+<i class="no-highlight">36</i>&nbsp;   */
+<i class="no-highlight">37</i>&nbsp;  private double regularMarketPrice;
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;  /**
+<i class="no-highlight">40</i>&nbsp;   * The change in price expressed as a percentage.
+<i class="no-highlight">41</i>&nbsp;   */
+<i class="no-highlight">42</i>&nbsp;  private double regularMarketChangePercent;
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;  /**
+<i class="no-highlight">45</i>&nbsp;   * The price at which the asset closed the previous trading day.
+<i class="no-highlight">46</i>&nbsp;   */
+<i class="no-highlight">47</i>&nbsp;  private double regularMarketPreviousClose;
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;  /**
+<i class="no-highlight">50</i>&nbsp;   * The change in price expressed as USD.
+<i class="no-highlight">51</i>&nbsp;   */
+<i class="no-highlight">52</i>&nbsp;  private double regularMarketChange;
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;  /**
+<i class="no-highlight">55</i>&nbsp;   * Price of asset on previous market open.
+<i class="no-highlight">56</i>&nbsp;   */
+<i class="no-highlight">57</i>&nbsp;  private double regularMarketOpen;
+<i class="no-highlight">58</i>&nbsp;
+<i class="no-highlight">59</i>&nbsp;  /**
+<i class="no-highlight">60</i>&nbsp;   * Type of asset quote.
+<i class="no-highlight">61</i>&nbsp;   */
+<i class="no-highlight">62</i>&nbsp;  private String quoteType;
+<i class="no-highlight">63</i>&nbsp;
+<i class="no-highlight">64</i>&nbsp;  /**
+<i class="no-highlight">65</i>&nbsp;   * full name of the specified Asset that is being exchanged.
+<i class="no-highlight">66</i>&nbsp;   */
+<i class="no-highlight">67</i>&nbsp;  private String fullExchangeName;
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;  /** Type of asset quote.
+<i class="no-highlight">70</i>&nbsp;   *
+<i class="no-highlight">71</i>&nbsp;   * @param assetSymbol symbol of the asset that is being requested.
+<i class="no-highlight">72</i>&nbsp;   */
+<b class="nc"><i class="no-highlight">73</i>&nbsp;  public AssetQuote(String assetSymbol) {</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;    this.assetSymbol = assetSymbol;</b>
+<i class="no-highlight">75</i>&nbsp;  }
+<i class="no-highlight">76</i>&nbsp;
+<i class="no-highlight">77</i>&nbsp;  /**
+<i class="no-highlight">78</i>&nbsp;   * AssetQuote Constructor.
+<i class="no-highlight">79</i>&nbsp;   *
+<i class="no-highlight">80</i>&nbsp;   * @param assetSymbol Stock ticker of AssetQuote object
+<i class="no-highlight">81</i>&nbsp;   * @param fullExchangeName Name of exchange
+<i class="no-highlight">82</i>&nbsp;   * @param timeStamp Epoch timestamp representing date
+<i class="no-highlight">83</i>&nbsp;   * @param regularMarketPrice Current market price
+<i class="no-highlight">84</i>&nbsp;   * @param regularMarketChangePercent Change in price since market open %
+<i class="no-highlight">85</i>&nbsp;   * @param regularMarketChange Change in market price in $
+<i class="no-highlight">86</i>&nbsp;   * @param quoteType Type of asset
+<i class="no-highlight">87</i>&nbsp;   * @param regularMarketPreviousClose Price of asset at previous days close
+<i class="no-highlight">88</i>&nbsp;   * @param regularMarketOpen Price of asset at market open
+<i class="no-highlight">89</i>&nbsp;   */
+<i class="no-highlight">90</i>&nbsp;  public AssetQuote(String assetSymbol, String fullExchangeName, int timeStamp,
+<i class="no-highlight">91</i>&nbsp;      double regularMarketPrice, double regularMarketChangePercent,
+<i class="no-highlight">92</i>&nbsp;      double regularMarketChange, String quoteType, double regularMarketPreviousClose,
+<b class="fc"><i class="no-highlight">93</i>&nbsp;      double regularMarketOpen) {</b>
+<b class="fc"><i class="no-highlight">94</i>&nbsp;    this.assetSymbol = assetSymbol;</b>
+<b class="fc"><i class="no-highlight">95</i>&nbsp;    this.fullExchangeName = fullExchangeName;</b>
+<b class="fc"><i class="no-highlight">96</i>&nbsp;    this.timeStamp = timeStamp;</b>
+<b class="fc"><i class="no-highlight">97</i>&nbsp;    this.regularMarketPrice = regularMarketPrice;</b>
+<b class="fc"><i class="no-highlight">98</i>&nbsp;    this.regularMarketChangePercent = regularMarketChangePercent;</b>
+<b class="fc"><i class="no-highlight">99</i>&nbsp;    this.regularMarketChange = regularMarketChange;</b>
+<b class="fc"><i class="no-highlight">100</i>&nbsp;    this.quoteType = quoteType;</b>
+<b class="fc"><i class="no-highlight">101</i>&nbsp;    this.regularMarketPreviousClose = regularMarketPreviousClose;</b>
+<b class="fc"><i class="no-highlight">102</i>&nbsp;    this.regularMarketOpen = regularMarketOpen;</b>
+<i class="no-highlight">103</i>&nbsp;  }
+<i class="no-highlight">104</i>&nbsp;
+<i class="no-highlight">105</i>&nbsp;  /**
+<i class="no-highlight">106</i>&nbsp;   * Gives the symbol of the specific Asset.
+<i class="no-highlight">107</i>&nbsp;
+<i class="no-highlight">108</i>&nbsp;   * @return a &lt;code&gt;string&lt;/code&gt; with the asset symbol.
+<i class="no-highlight">109</i>&nbsp;   */
+<i class="no-highlight">110</i>&nbsp;  public String getAssetSymbol() {
+<b class="fc"><i class="no-highlight">111</i>&nbsp;    return this.assetSymbol;</b>
+<i class="no-highlight">112</i>&nbsp;  }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;  /**
+<i class="no-highlight">115</i>&nbsp;   * Gives the exchange name providing the quote.
+<i class="no-highlight">116</i>&nbsp;
+<i class="no-highlight">117</i>&nbsp;   * @return a &lt;code&gt;string&lt;/code&gt; with the exchange name providing the quote.
+<i class="no-highlight">118</i>&nbsp;   */
+<i class="no-highlight">119</i>&nbsp;  public String getFullExchangeName() {
+<b class="fc"><i class="no-highlight">120</i>&nbsp;    return fullExchangeName;</b>
+<i class="no-highlight">121</i>&nbsp;  }
+<i class="no-highlight">122</i>&nbsp;
+<i class="no-highlight">123</i>&nbsp;  /** Gives the type of quote that is being requested for the Asset.
+<i class="no-highlight">124</i>&nbsp;
+<i class="no-highlight">125</i>&nbsp;   * @return a &lt;code&gt;string&lt;/code&gt; indicating the quote type.
+<i class="no-highlight">126</i>&nbsp;   */
+<i class="no-highlight">127</i>&nbsp;  public String getQuoteType() {
+<b class="fc"><i class="no-highlight">128</i>&nbsp;    return this.quoteType;</b>
+<i class="no-highlight">129</i>&nbsp;  }
+<i class="no-highlight">130</i>&nbsp;
+<i class="no-highlight">131</i>&nbsp;  /** Gives the regular market price of the Asset.
+<i class="no-highlight">132</i>&nbsp;
+<i class="no-highlight">133</i>&nbsp;   * @return a &lt;code&gt;double&lt;/code&gt; with the market price for the AssetQuote.
+<i class="no-highlight">134</i>&nbsp;   */
+<i class="no-highlight">135</i>&nbsp;  public double getRegularMarketPrice() {
+<b class="fc"><i class="no-highlight">136</i>&nbsp;    return this.regularMarketPrice;</b>
+<i class="no-highlight">137</i>&nbsp;  }
+<i class="no-highlight">138</i>&nbsp;
+<i class="no-highlight">139</i>&nbsp;  /** This method add the proper date and time of any asset exchange.
+<i class="no-highlight">140</i>&nbsp;   *
+<i class="no-highlight">141</i>&nbsp;   * @param timeStamp The exact time and date when a specific activity or event took place.
+<i class="no-highlight">142</i>&nbsp;   */
+<i class="no-highlight">143</i>&nbsp;  public void addTimeStampToList(long timeStamp) {
+<b class="nc"><i class="no-highlight">144</i>&nbsp;    timestamp.add(timeStamp);</b>
+<i class="no-highlight">145</i>&nbsp;  }
+<i class="no-highlight">146</i>&nbsp;
+<i class="no-highlight">147</i>&nbsp;  /** This method adds the asset closing price to the list.
+<i class="no-highlight">148</i>&nbsp;   *
+<i class="no-highlight">149</i>&nbsp;   * @param closingPrice The last transacted price of an asset.
+<i class="no-highlight">150</i>&nbsp;   */
+<i class="no-highlight">151</i>&nbsp;  public void addClosingPriceToList(double closingPrice) {
+<b class="nc"><i class="no-highlight">152</i>&nbsp;    close.add(closingPrice);</b>
+<i class="no-highlight">153</i>&nbsp;  }
+<i class="no-highlight">154</i>&nbsp;
+<i class="no-highlight">155</i>&nbsp;  /** This method converts data to string values.
+<i class="no-highlight">156</i>&nbsp;   *
+<i class="no-highlight">157</i>&nbsp;   * @return Returning asset symbol, market price, market change percent and market change values.
+<i class="no-highlight">158</i>&nbsp;   */
+<i class="no-highlight">159</i>&nbsp;
+<i class="no-highlight">160</i>&nbsp;  @Override
+<i class="no-highlight">161</i>&nbsp;  public String toString() {
+<b class="fc"><i class="no-highlight">162</i>&nbsp;    return assetSymbol + &quot;\t\t - Current Price (USD): &quot; + regularMarketPrice</b>
+<i class="no-highlight">163</i>&nbsp;        + &quot;\t\t - % change: &quot; + regularMarketChangePercent + &quot;\t\t - $ change: &quot;
+<i class="no-highlight">164</i>&nbsp;        + regularMarketChange;
+<i class="no-highlight">165</i>&nbsp;  }
+<i class="no-highlight">166</i>&nbsp;
+<i class="no-highlight">167</i>&nbsp;  /** This method converts data into string values as output.
+<i class="no-highlight">168</i>&nbsp;   *
+<i class="no-highlight">169</i>&nbsp;   * @return Returning the exchange name, asset symbol, market price, market change percent
+<i class="no-highlight">170</i>&nbsp;   *        market change, quote type, market previous close and market open values.
+<i class="no-highlight">171</i>&nbsp;   */
+<i class="no-highlight">172</i>&nbsp;  public String exchangeToString() {
+<b class="nc"><i class="no-highlight">173</i>&nbsp;    return fullExchangeName + &quot; - &quot; + assetSymbol + &quot;\t || Current Price (USD): &quot;</b>
+<i class="no-highlight">174</i>&nbsp;        + regularMarketPrice + &quot;\t || % change: &quot; + regularMarketChangePercent + &quot;\t || $ change: &quot;
+<i class="no-highlight">175</i>&nbsp;            + regularMarketChange + &quot;\t || Quote Type: &quot; + quoteType
+<i class="no-highlight">176</i>&nbsp;        + &quot;\t || Previous Close: (USD) &quot; + regularMarketPreviousClose
+<i class="no-highlight">177</i>&nbsp;            + &quot;\t || Market Open: (USD) &quot; + regularMarketOpen;
+<i class="no-highlight">178</i>&nbsp;  }
+<i class="no-highlight">179</i>&nbsp;
+<i class="no-highlight">180</i>&nbsp;  /**
+<i class="no-highlight">181</i>&nbsp;   *This method converts historical asset data into string values.
+<i class="no-highlight">182</i>&nbsp;   */
+<i class="no-highlight">183</i>&nbsp;  public void historicDataToString() {
+<b class="nc"><i class="no-highlight">184</i>&nbsp;    System.out.println(&quot;HISTORIC DATA: &quot; + assetSymbol);</b>
+<b class="nc"><i class="no-highlight">185</i>&nbsp;    for (int i = 0; i &lt; close.size(); i++) {</b>
+<b class="nc"><i class="no-highlight">186</i>&nbsp;      System.out.println(&quot;Date: &quot; + convertLongToDate(timestamp.get(i))</b>
+<b class="nc"><i class="no-highlight">187</i>&nbsp;              + &quot; - Closing Price (USD): &quot; + close.get(i));</b>
+<b class="nc"><i class="no-highlight">188</i>&nbsp;      System.out.println();</b>
+<i class="no-highlight">189</i>&nbsp;    }
+<i class="no-highlight">190</i>&nbsp;  }
+<i class="no-highlight">191</i>&nbsp;
+<i class="no-highlight">192</i>&nbsp;  /**
+<i class="no-highlight">193</i>&nbsp;   * This method converts the long timestamp values into date(s).
+<i class="no-highlight">194</i>&nbsp;   */
+<i class="no-highlight">195</i>&nbsp;  private static String convertLongToDate(long timeStamp) {
+<b class="nc"><i class="no-highlight">196</i>&nbsp;    Date date = new Date(timeStamp * 1000);</b>
+<b class="nc"><i class="no-highlight">197</i>&nbsp;    Format format = new SimpleDateFormat(&quot;dd/MM/yyyy HH:mm:ss&quot;);</b>
+<b class="nc"><i class="no-highlight">198</i>&nbsp;    return format.format(date);</b>
+<i class="no-highlight">199</i>&nbsp;  }
+<i class="no-highlight">200</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Default Suite">
+  <test thread-count="5" name="contemporary-software-development-ca2-2021-22-team-project-team-3">
+    <classes>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetAssetInformationITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_AddFundsITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_AddFundsUTest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetAssetQuotesITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_listAssetsByName"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_ListPortfolioSalesInRange"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_ListPortfolioPurchasesInRangeITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetAssetQuoteITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetAssetsWithHoldingsITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetHistoricData"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_ListAllAssetsITest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_listPortfolioAssetsByType"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_getExchangeSummaryITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_withdrawFundsUTest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_withdrawFundsITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetAssetInformationUTest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetPortfolioValueITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetPortfolioValueUTest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_GetTrendingStocksITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetTrendingStocksUTest"/>
+      <class name="com.lyit.csd.tests.integration.PortfolioManager_SellAssetITest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_SellAssetUTest"/>
+    </classes>
+  </test> <!-- contemporary-software-development-ca2-2021-22-team-project-team-3 -->
+</suite> <!-- Default Suite -->

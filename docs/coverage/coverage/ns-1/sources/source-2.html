@@ -1,0 +1,575 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Main</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.app</a>
+</div>
+
+<h1>Coverage Summary for Class: Main (com.lyit.csd.app)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Main</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/180)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.app;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.lyit.csd.domain.Asset;
+<i class="no-highlight">4</i>&nbsp;import com.lyit.csd.domain.AssetQuote;
+<i class="no-highlight">5</i>&nbsp;import com.lyit.csd.domain.DateTimeHelper;
+<i class="no-highlight">6</i>&nbsp;import com.lyit.csd.domain.PortfolioManager;
+<i class="no-highlight">7</i>&nbsp;import com.lyit.csd.domain.PortfolioSystem;
+<i class="no-highlight">8</i>&nbsp;import com.lyit.csd.marketapi.MarketClientFactory;
+<i class="no-highlight">9</i>&nbsp;import com.lyit.csd.marketapi.MarketClientFactory.MarketClientTypes;
+<i class="no-highlight">10</i>&nbsp;import com.lyit.csd.marketapi.abstraction.MarketClient;
+<i class="no-highlight">11</i>&nbsp;import java.time.LocalDate;
+<i class="no-highlight">12</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">13</i>&nbsp;import java.util.List;
+<i class="no-highlight">14</i>&nbsp;import java.util.function.Function;
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;/**
+<i class="no-highlight">17</i>&nbsp; * The {@link Main} class provides the UI and entry point for the investment portfolio project.
+<i class="no-highlight">18</i>&nbsp; *
+<i class="no-highlight">19</i>&nbsp; * &lt;p&gt;init(), UI and data retrieval from the user is contained in the main class.
+<i class="no-highlight">20</i>&nbsp; */
+<b class="nc"><i class="no-highlight">21</i>&nbsp;public class Main {</b>
+<i class="no-highlight">22</i>&nbsp;  private static PortfolioSystem portfolioSystem;
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;  /**
+<i class="no-highlight">25</i>&nbsp;   * The main method displays the command line interface of this application.
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;   * @param args Displays User interface as a command line.
+<i class="no-highlight">28</i>&nbsp;   */
+<i class="no-highlight">29</i>&nbsp;  public static void main(String[] args) {
+<b class="nc"><i class="no-highlight">30</i>&nbsp;    init();</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;    displayUi();</b>
+<i class="no-highlight">32</i>&nbsp;  }
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;  /**
+<i class="no-highlight">35</i>&nbsp;   * This method displays market client information.
+<i class="no-highlight">36</i>&nbsp;   */
+<i class="no-highlight">37</i>&nbsp;  private static void init() {
+<i class="no-highlight">38</i>&nbsp;    // We use and inject a MarketClient interface into PortfolioManager.
+<i class="no-highlight">39</i>&nbsp;    // This will allow us to pass in a &#39;Mock&#39; client for unit testing.
+<i class="no-highlight">40</i>&nbsp;    // We are using a factory pattern to get the market client. This creational pattern creates
+<i class="no-highlight">41</i>&nbsp;    // a MarketClient object without exposing the creation logic to this client ui. It also reduces
+<i class="no-highlight">42</i>&nbsp;    // coupling in that we do not need to bind the UI or the PortfolioSystem to the YahooClient.
+<b class="nc"><i class="no-highlight">43</i>&nbsp;    MarketClientFactory marketClientFactory = new MarketClientFactory();</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;    MarketClient marketClient = marketClientFactory.getMarketClient(MarketClientTypes.Yahoo);</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;    portfolioSystem = new PortfolioManager(marketClient);</b>
+<i class="no-highlight">46</i>&nbsp;  }
+<i class="no-highlight">47</i>&nbsp;
+<i class="no-highlight">48</i>&nbsp;  /**
+<i class="no-highlight">49</i>&nbsp;   * This method displays the user interface of the program, whereby user
+<i class="no-highlight">50</i>&nbsp;   * input is requested to make a selection.
+<i class="no-highlight">51</i>&nbsp;   */
+<i class="no-highlight">52</i>&nbsp;  public static void displayUi() {
+<i class="no-highlight">53</i>&nbsp;    boolean exitCondition;
+<i class="no-highlight">54</i>&nbsp;
+<i class="no-highlight">55</i>&nbsp;    do {
+<i class="no-highlight">56</i>&nbsp;      int userSelection;
+<b class="nc"><i class="no-highlight">57</i>&nbsp;      printMenu();</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;      userSelection = getUserInput(&quot;Enter your selection&quot;, Integer::parseInt);</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;      exitCondition = processUserSelection(userSelection);</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;    } while (!exitCondition);</b>
+<i class="no-highlight">61</i>&nbsp;  }
+<i class="no-highlight">62</i>&nbsp;
+<i class="no-highlight">63</i>&nbsp;  /**
+<i class="no-highlight">64</i>&nbsp;   * This method displays the full menu of choices that can be selected by a user
+<i class="no-highlight">65</i>&nbsp;   * that runs the program. The main PORTFOLIO MANAGEMENT SYSTEM options are shown.
+<i class="no-highlight">66</i>&nbsp;   */
+<i class="no-highlight">67</i>&nbsp;  private static void printMenu() {
+<b class="nc"><i class="no-highlight">68</i>&nbsp;    System.out.println(&quot;\t&quot; + ConsoleColors.GREEN_UNDERLINED</b>
+<i class="no-highlight">69</i>&nbsp;            + &quot;PORTFOLIO MANAGEMENT SYSTEM&quot; + ConsoleColors.RESET);
+<i class="no-highlight">70</i>&nbsp;
+<b class="nc"><i class="no-highlight">71</i>&nbsp;    String menu = &quot;&quot;&quot;</b>
+<i class="no-highlight">72</i>&nbsp;            Please make one selection from the given options:
+<i class="no-highlight">73</i>&nbsp;            1. Add Funds
+<i class="no-highlight">74</i>&nbsp;            2. Withdraw Funds
+<i class="no-highlight">75</i>&nbsp;            3. Get Assets w/ Holdings
+<i class="no-highlight">76</i>&nbsp;            4. Display Available Funds
+<i class="no-highlight">77</i>&nbsp;            5. Purchase Asset
+<i class="no-highlight">78</i>&nbsp;            6. Sell Asset
+<i class="no-highlight">79</i>&nbsp;            7. Get Trending Stocks
+<i class="no-highlight">80</i>&nbsp;            8. Get Historical Data
+<i class="no-highlight">81</i>&nbsp;            9. Get Exchange Summary
+<i class="no-highlight">82</i>&nbsp;            10. Get Asset Information
+<i class="no-highlight">83</i>&nbsp;            11. Get Asset Quotes
+<i class="no-highlight">84</i>&nbsp;            12. Get Asset Quote
+<i class="no-highlight">85</i>&nbsp;            13. Get Portfolio Value
+<i class="no-highlight">86</i>&nbsp;            14. List All Investments
+<i class="no-highlight">87</i>&nbsp;            15. List Portfolio Assets by Type
+<i class="no-highlight">88</i>&nbsp;            16. List Portfolio Assets by Name
+<i class="no-highlight">89</i>&nbsp;            17. List Portfolio Purchases in Range
+<i class="no-highlight">90</i>&nbsp;            18. List Portfolio Sales in Range
+<i class="no-highlight">91</i>&nbsp;            19. Exit Menu&quot;&quot;&quot;;
+<b class="nc"><i class="no-highlight">92</i>&nbsp;    System.out.println(ConsoleColors.YELLOW_BOLD + menu + ConsoleColors.RESET);</b>
+<i class="no-highlight">93</i>&nbsp;  }
+<i class="no-highlight">94</i>&nbsp;
+<i class="no-highlight">95</i>&nbsp;  /**
+<i class="no-highlight">96</i>&nbsp;   * This method shows the title menu of the application.
+<i class="no-highlight">97</i>&nbsp;
+<i class="no-highlight">98</i>&nbsp;   * @param menuTitle displays the heading title of the menu.
+<i class="no-highlight">99</i>&nbsp;   */
+<i class="no-highlight">100</i>&nbsp;  private static void printMenuTitle(String menuTitle) {
+<b class="nc"><i class="no-highlight">101</i>&nbsp;    System.out.println(ConsoleColors.BLUE_UNDERLINED + menuTitle + ConsoleColors.RESET);</b>
+<i class="no-highlight">102</i>&nbsp;  }
+<i class="no-highlight">103</i>&nbsp;
+<i class="no-highlight">104</i>&nbsp;  /**
+<i class="no-highlight">105</i>&nbsp;   * This method prints an error message, in red color font to the console.
+<i class="no-highlight">106</i>&nbsp;
+<i class="no-highlight">107</i>&nbsp;   * @param message The message to print to the console.
+<i class="no-highlight">108</i>&nbsp;   */
+<i class="no-highlight">109</i>&nbsp;  private static void printError(String message) {
+<b class="nc"><i class="no-highlight">110</i>&nbsp;    System.out.println(ConsoleColors.RED_BOLD + message</b>
+<i class="no-highlight">111</i>&nbsp;            + ConsoleColors.RESET);
+<i class="no-highlight">112</i>&nbsp;  }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;  /**
+<i class="no-highlight">115</i>&nbsp;   * This method requests the user to enter data that will be processed by the program.
+<i class="no-highlight">116</i>&nbsp;
+<i class="no-highlight">117</i>&nbsp;   * @param prompt select asset type.
+<i class="no-highlight">118</i>&nbsp;
+<i class="no-highlight">119</i>&nbsp;   * @param function what needs to be done.
+<i class="no-highlight">120</i>&nbsp;
+<i class="no-highlight">121</i>&nbsp;   * @param &lt;T&gt; object for the input provided by the user
+<i class="no-highlight">122</i>&nbsp;   * @return programs outcome.
+<i class="no-highlight">123</i>&nbsp;   */
+<i class="no-highlight">124</i>&nbsp;  private static &lt;T&gt; T getUserInput(String prompt, Function&lt;String, T&gt; function) {
+<b class="nc"><i class="no-highlight">125</i>&nbsp;    System.out.println(ConsoleColors.PURPLE_BOLD + prompt + ConsoleColors.RESET);</b>
+<b class="nc"><i class="no-highlight">126</i>&nbsp;    return ScannerInput.getParsed(prompt, function);</b>
+<i class="no-highlight">127</i>&nbsp;  }
+<i class="no-highlight">128</i>&nbsp;
+<i class="no-highlight">129</i>&nbsp;  /**
+<i class="no-highlight">130</i>&nbsp;   * This method request the user to type specific details.
+<i class="no-highlight">131</i>&nbsp;
+<i class="no-highlight">132</i>&nbsp;   * @param prompt enter asset value.
+<i class="no-highlight">133</i>&nbsp;   * @return The users input will be returned.
+<i class="no-highlight">134</i>&nbsp;   */
+<i class="no-highlight">135</i>&nbsp;  private static String getStringInput(String prompt) {
+<b class="nc"><i class="no-highlight">136</i>&nbsp;    System.out.println(ConsoleColors.PURPLE_BOLD + prompt + ConsoleColors.RESET);</b>
+<b class="nc"><i class="no-highlight">137</i>&nbsp;    return ScannerInput.getLine();</b>
+<i class="no-highlight">138</i>&nbsp;  }
+<i class="no-highlight">139</i>&nbsp;
+<i class="no-highlight">140</i>&nbsp;  /**
+<i class="no-highlight">141</i>&nbsp;   * This method processes the user input based on selection made,
+<i class="no-highlight">142</i>&nbsp;   * there are eighteen options to be chosen from.
+<i class="no-highlight">143</i>&nbsp;
+<i class="no-highlight">144</i>&nbsp;   * @param userSelection Any of the 18 options as indicated below
+<i class="no-highlight">145</i>&nbsp;   * @return Logging of.
+<i class="no-highlight">146</i>&nbsp;   */
+<i class="no-highlight">147</i>&nbsp;  private static Boolean processUserSelection(int userSelection) {
+<b class="nc"><i class="no-highlight">148</i>&nbsp;    switch (userSelection) {</b>
+<b class="nc"><i class="no-highlight">149</i>&nbsp;      case 1 -&gt; processAddFunds();</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;      case 2 -&gt; processWithdrawFunds();</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;      case 3 -&gt; processViewAssetsWithHoldings();</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;      case 4 -&gt; processViewAvailableFunds();</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;      case 5 -&gt; processPurchaseAssets();</b>
+<b class="nc"><i class="no-highlight">154</i>&nbsp;      case 6 -&gt; processSellAssets();</b>
+<b class="nc"><i class="no-highlight">155</i>&nbsp;      case 7 -&gt; processViewTrendingStocksByRegion();</b>
+<b class="nc"><i class="no-highlight">156</i>&nbsp;      case 8 -&gt; processViewHistoricalData();</b>
+<b class="nc"><i class="no-highlight">157</i>&nbsp;      case 9 -&gt; processViewExchangeSummary();</b>
+<b class="nc"><i class="no-highlight">158</i>&nbsp;      case 10 -&gt; processViewAssetInformation();</b>
+<b class="nc"><i class="no-highlight">159</i>&nbsp;      case 11, 12 -&gt; processViewAssetQuotes();</b>
+<b class="nc"><i class="no-highlight">160</i>&nbsp;      case 13 -&gt; processViewPortfolioValue();</b>
+<b class="nc"><i class="no-highlight">161</i>&nbsp;      case 14 -&gt; processListAllInvestments();</b>
+<b class="nc"><i class="no-highlight">162</i>&nbsp;      case 15 -&gt; processListPortfolioAssetsByType();</b>
+<b class="nc"><i class="no-highlight">163</i>&nbsp;      case 16 -&gt; processListPortfolioAssetsByName();</b>
+<b class="nc"><i class="no-highlight">164</i>&nbsp;      case 17 -&gt; processListPortfolioPurchasesInRange();</b>
+<b class="nc"><i class="no-highlight">165</i>&nbsp;      case 18 -&gt; processListPortfolioSalesInRange();</b>
+<i class="no-highlight">166</i>&nbsp;      case 19 -&gt; {
+<b class="nc"><i class="no-highlight">167</i>&nbsp;        System.out.println(&quot;Logging off...&quot;);</b>
+<b class="nc"><i class="no-highlight">168</i>&nbsp;        return true;</b>
+<i class="no-highlight">169</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">170</i>&nbsp;      default -&gt; printError(&quot;Invalid Selection. Please try again:&quot;);</b>
+<i class="no-highlight">171</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">172</i>&nbsp;    return false;</b>
+<i class="no-highlight">173</i>&nbsp;  }
+<i class="no-highlight">174</i>&nbsp;
+<i class="no-highlight">175</i>&nbsp;  /**
+<i class="no-highlight">176</i>&nbsp;  *&lt;code&gt;processListPortfolioSalesInRange&lt;/code&gt; returns portfolio sales within
+<i class="no-highlight">177</i>&nbsp;  *a specific range as defined by the user.
+<i class="no-highlight">178</i>&nbsp;  */
+<i class="no-highlight">179</i>&nbsp;  private static void processListPortfolioSalesInRange() {
+<b class="nc"><i class="no-highlight">180</i>&nbsp;    printMenuTitle(&quot;***VIEW PORTFOLIO SALES IN RANGE***&quot;);</b>
+<i class="no-highlight">181</i>&nbsp;
+<b class="nc"><i class="no-highlight">182</i>&nbsp;    LocalDate startDate = getUserInput(&quot;Enter start date in format &quot;</b>
+<i class="no-highlight">183</i>&nbsp;            + &quot;&#39;yyyy-MM-dd&#39;:&quot;, LocalDate::parse);
+<b class="nc"><i class="no-highlight">184</i>&nbsp;    long startTimeStamp = DateTimeHelper.convertToEpochMilliseconds(startDate);</b>
+<i class="no-highlight">185</i>&nbsp;
+<b class="nc"><i class="no-highlight">186</i>&nbsp;    LocalDate endDate = getUserInput(&quot;Enter end date in format &quot;</b>
+<i class="no-highlight">187</i>&nbsp;            + &quot;&#39;yyyy-MM-dd&#39;:&quot;, LocalDate::parse);
+<b class="nc"><i class="no-highlight">188</i>&nbsp;    long endTimeStamp = DateTimeHelper.convertToEpochMilliseconds(endDate) + (86400000 - 1);</b>
+<i class="no-highlight">189</i>&nbsp;
+<b class="nc"><i class="no-highlight">190</i>&nbsp;    String result = portfolioSystem.listPortfolioSalesInRange(startTimeStamp, endTimeStamp);</b>
+<b class="nc"><i class="no-highlight">191</i>&nbsp;    if (result.isEmpty()) {</b>
+<b class="nc"><i class="no-highlight">192</i>&nbsp;      System.out.println(&quot;No records to show.&quot;);</b>
+<i class="no-highlight">193</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">194</i>&nbsp;      System.out.println(result);</b>
+<i class="no-highlight">195</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">196</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">197</i>&nbsp;  }
+<i class="no-highlight">198</i>&nbsp;
+<i class="no-highlight">199</i>&nbsp;  /**
+<i class="no-highlight">200</i>&nbsp;   * &lt;code&gt;processListPortfolioPurchasesInRange&lt;/code&gt; returns portfolio
+<i class="no-highlight">201</i>&nbsp;   * purchases within a specific range as defined by the user.
+<i class="no-highlight">202</i>&nbsp;   */
+<i class="no-highlight">203</i>&nbsp;  private static void processListPortfolioPurchasesInRange() {
+<b class="nc"><i class="no-highlight">204</i>&nbsp;    printMenuTitle(&quot;***VIEW PORTFOLIO PURCHASES IN RANGE***&quot;);</b>
+<i class="no-highlight">205</i>&nbsp;
+<b class="nc"><i class="no-highlight">206</i>&nbsp;    LocalDate startDate = getUserInput(&quot;Enter start date in format &quot;</b>
+<i class="no-highlight">207</i>&nbsp;            + &quot;&#39;yyyy-MM-dd&#39;:&quot;, LocalDate::parse);
+<b class="nc"><i class="no-highlight">208</i>&nbsp;    long startTimeStamp = DateTimeHelper.convertToEpochMilliseconds(startDate);</b>
+<i class="no-highlight">209</i>&nbsp;
+<b class="nc"><i class="no-highlight">210</i>&nbsp;    LocalDate endDate = getUserInput(&quot;Enter end date in format &quot;</b>
+<i class="no-highlight">211</i>&nbsp;            + &quot;&#39;yyyy-MM-dd&#39;:&quot;, LocalDate::parse);
+<b class="nc"><i class="no-highlight">212</i>&nbsp;    long endTimeStamp = DateTimeHelper.convertToEpochMilliseconds(endDate) + (86400000 - 1);</b>
+<i class="no-highlight">213</i>&nbsp;
+<b class="nc"><i class="no-highlight">214</i>&nbsp;    String result = portfolioSystem.listPortfolioPurchasesInRange(startTimeStamp, endTimeStamp);</b>
+<b class="nc"><i class="no-highlight">215</i>&nbsp;    if (result.isEmpty()) {</b>
+<b class="nc"><i class="no-highlight">216</i>&nbsp;      System.out.println(&quot;No records to show.&quot;);</b>
+<i class="no-highlight">217</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">218</i>&nbsp;      System.out.println(result);</b>
+<i class="no-highlight">219</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">220</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">221</i>&nbsp;  }
+<i class="no-highlight">222</i>&nbsp;
+<i class="no-highlight">223</i>&nbsp;  /**
+<i class="no-highlight">224</i>&nbsp;   * &lt;code&gt;processListPortfolioAssetsByName&lt;/code&gt; returns portfolio asset sorted by name.
+<i class="no-highlight">225</i>&nbsp;   */
+<i class="no-highlight">226</i>&nbsp;  private static void processListPortfolioAssetsByName() {
+<b class="nc"><i class="no-highlight">227</i>&nbsp;    printMenuTitle(&quot;***VIEW ASSETS BY NAME***&quot;);</b>
+<b class="nc"><i class="no-highlight">228</i>&nbsp;    List&lt;String&gt; assetSymbols = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">229</i>&nbsp;    while (true) {
+<b class="nc"><i class="no-highlight">230</i>&nbsp;      String input = getStringInput(&quot;Enter symbols of the assets you wish to retrieve data &quot;</b>
+<i class="no-highlight">231</i>&nbsp;          + &quot;for, one at a time:\nEnter &#39;N&#39; to stop input...&quot;);
+<b class="nc"><i class="no-highlight">232</i>&nbsp;      if (input.equalsIgnoreCase(&quot;N&quot;)) {</b>
+<b class="nc"><i class="no-highlight">233</i>&nbsp;        break;</b>
+<i class="no-highlight">234</i>&nbsp;      } else {
+<b class="nc"><i class="no-highlight">235</i>&nbsp;        assetSymbols.add(input);</b>
+<i class="no-highlight">236</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">237</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">238</i>&nbsp;    String result = portfolioSystem.listPortfolioAssetsByName(assetSymbols);</b>
+<b class="nc"><i class="no-highlight">239</i>&nbsp;    System.out.println(result);</b>
+<b class="nc"><i class="no-highlight">240</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">241</i>&nbsp;  }
+<i class="no-highlight">242</i>&nbsp;
+<i class="no-highlight">243</i>&nbsp;  /**
+<i class="no-highlight">244</i>&nbsp;   * &lt;code&gt;processListPortfolioAssetsByType&lt;/code&gt; returns portfolio asset sorted by type.
+<i class="no-highlight">245</i>&nbsp;   */
+<i class="no-highlight">246</i>&nbsp;  private static void processListPortfolioAssetsByType() {
+<b class="nc"><i class="no-highlight">247</i>&nbsp;    printMenuTitle(&quot;***VIEW ASSETS BY TYPE***&quot;);</b>
+<b class="nc"><i class="no-highlight">248</i>&nbsp;    String assetType = getStringInput(&quot;Enter asset type:&quot;);</b>
+<b class="nc"><i class="no-highlight">249</i>&nbsp;    String result = portfolioSystem.listPortfolioAssetsByType(assetType);</b>
+<b class="nc"><i class="no-highlight">250</i>&nbsp;    System.out.println(result);</b>
+<b class="nc"><i class="no-highlight">251</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">252</i>&nbsp;  }
+<i class="no-highlight">253</i>&nbsp;
+<i class="no-highlight">254</i>&nbsp;  /**
+<i class="no-highlight">255</i>&nbsp;   * &lt;code&gt;processListAllInvestments&lt;/code&gt; returns all investments made.
+<i class="no-highlight">256</i>&nbsp;   */
+<i class="no-highlight">257</i>&nbsp;  private static void processListAllInvestments() {
+<b class="nc"><i class="no-highlight">258</i>&nbsp;    printMenuTitle(&quot;***VIEW CURRENT INVESTMENTS&quot;);</b>
+<b class="nc"><i class="no-highlight">259</i>&nbsp;    String result = portfolioSystem.listAllInvestments();</b>
+<b class="nc"><i class="no-highlight">260</i>&nbsp;    System.out.println(result);</b>
+<b class="nc"><i class="no-highlight">261</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">262</i>&nbsp;  }
+<i class="no-highlight">263</i>&nbsp;
+<i class="no-highlight">264</i>&nbsp;  /**
+<i class="no-highlight">265</i>&nbsp;   * &lt;code&gt;processViewPortfolioValue&lt;/code&gt; returns the full portfolio value.
+<i class="no-highlight">266</i>&nbsp;   */
+<i class="no-highlight">267</i>&nbsp;  private static void processViewPortfolioValue() {
+<b class="nc"><i class="no-highlight">268</i>&nbsp;    printMenuTitle(&quot;***VIEW PORTFOLIO VALUE***&quot;);</b>
+<b class="nc"><i class="no-highlight">269</i>&nbsp;    double portfolioValue = portfolioSystem.getPortfolioValue();</b>
+<b class="nc"><i class="no-highlight">270</i>&nbsp;    System.out.println(portfolioValue);</b>
+<b class="nc"><i class="no-highlight">271</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">272</i>&nbsp;  }
+<i class="no-highlight">273</i>&nbsp;
+<i class="no-highlight">274</i>&nbsp;  /**
+<i class="no-highlight">275</i>&nbsp;   * This method displays asset quotes.
+<i class="no-highlight">276</i>&nbsp;   */
+<i class="no-highlight">277</i>&nbsp;  private static void processViewAssetQuotes() {
+<b class="nc"><i class="no-highlight">278</i>&nbsp;    printMenuTitle(&quot;***VIEW ASSET QUOTES***&quot;);</b>
+<b class="nc"><i class="no-highlight">279</i>&nbsp;    List&lt;String&gt; inputList = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">280</i>&nbsp;    while (true) {
+<b class="nc"><i class="no-highlight">281</i>&nbsp;      String input = getStringInput(&quot;Enter symbols of the assets you wish to &quot;</b>
+<i class="no-highlight">282</i>&nbsp;          + &quot;retrieve historical data one at a time:\nEnter &#39;N&#39; to stop input...&quot;);
+<b class="nc"><i class="no-highlight">283</i>&nbsp;      if (input.equalsIgnoreCase(&quot;N&quot;)) {</b>
+<b class="nc"><i class="no-highlight">284</i>&nbsp;        break;</b>
+<i class="no-highlight">285</i>&nbsp;      } else {
+<b class="nc"><i class="no-highlight">286</i>&nbsp;        inputList.add(input);</b>
+<i class="no-highlight">287</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">288</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">289</i>&nbsp;    List&lt;AssetQuote&gt; outputList = portfolioSystem.getAssetQuotes(inputList);</b>
+<b class="nc"><i class="no-highlight">290</i>&nbsp;    for (AssetQuote assetQuote : outputList) {</b>
+<b class="nc"><i class="no-highlight">291</i>&nbsp;      System.out.println(assetQuote.toString());</b>
+<b class="nc"><i class="no-highlight">292</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">293</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">294</i>&nbsp;  }
+<i class="no-highlight">295</i>&nbsp;
+<i class="no-highlight">296</i>&nbsp;  /**
+<i class="no-highlight">297</i>&nbsp;   * This method displays asset information that the user desires to see.
+<i class="no-highlight">298</i>&nbsp;   */
+<i class="no-highlight">299</i>&nbsp;  private static void processViewAssetInformation() {
+<b class="nc"><i class="no-highlight">300</i>&nbsp;    printMenuTitle(&quot;***VIEW ASSET INFORMATION***&quot;);</b>
+<b class="nc"><i class="no-highlight">301</i>&nbsp;    List&lt;String&gt; inputList = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">302</i>&nbsp;    List&lt;AssetQuote&gt; outputList;
+<i class="no-highlight">303</i>&nbsp;
+<i class="no-highlight">304</i>&nbsp;    while (true) {
+<b class="nc"><i class="no-highlight">305</i>&nbsp;      String input = getStringInput(&quot;Enter symbols of the assets you wish to &quot;</b>
+<i class="no-highlight">306</i>&nbsp;          + &quot;retrieve data for, one at a time:\nEnter &#39;N&#39; to stop input...&quot;);
+<b class="nc"><i class="no-highlight">307</i>&nbsp;      if (input.equalsIgnoreCase(&quot;N&quot;)) {</b>
+<b class="nc"><i class="no-highlight">308</i>&nbsp;        break;</b>
+<i class="no-highlight">309</i>&nbsp;      } else {
+<b class="nc"><i class="no-highlight">310</i>&nbsp;        inputList.add(input);</b>
+<i class="no-highlight">311</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">312</i>&nbsp;    }</b>
+<i class="no-highlight">313</i>&nbsp;
+<b class="nc"><i class="no-highlight">314</i>&nbsp;    outputList = portfolioSystem.getAssetInformation(inputList);</b>
+<b class="nc"><i class="no-highlight">315</i>&nbsp;    for (AssetQuote assetQuote : outputList) {</b>
+<b class="nc"><i class="no-highlight">316</i>&nbsp;      System.out.println(assetQuote.toString());</b>
+<b class="nc"><i class="no-highlight">317</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">318</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">319</i>&nbsp;  }
+<i class="no-highlight">320</i>&nbsp;
+<i class="no-highlight">321</i>&nbsp;  /**
+<i class="no-highlight">322</i>&nbsp;   * This method shows the exchange summary, based on region and asset.
+<i class="no-highlight">323</i>&nbsp;   */
+<i class="no-highlight">324</i>&nbsp;  private static void processViewExchangeSummary() {
+<b class="nc"><i class="no-highlight">325</i>&nbsp;    printMenuTitle(&quot;***VIEW EXCHANGE SUMMARY***&quot;);</b>
+<b class="nc"><i class="no-highlight">326</i>&nbsp;    String region = getStringInput(&quot;Enter region&quot;);</b>
+<b class="nc"><i class="no-highlight">327</i>&nbsp;    String symbol = getStringInput(&quot;Enter exchange symbol:&quot;);</b>
+<b class="nc"><i class="no-highlight">328</i>&nbsp;    System.out.println(portfolioSystem.getExchangeSummary(region, symbol));</b>
+<b class="nc"><i class="no-highlight">329</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">330</i>&nbsp;  }
+<i class="no-highlight">331</i>&nbsp;
+<i class="no-highlight">332</i>&nbsp;  /**
+<i class="no-highlight">333</i>&nbsp;   * This method provides historical data, which can help with the purchase decision making process.
+<i class="no-highlight">334</i>&nbsp;   */
+<i class="no-highlight">335</i>&nbsp;  private static void processViewHistoricalData() {
+<b class="nc"><i class="no-highlight">336</i>&nbsp;    MarketClient client =</b>
+<b class="nc"><i class="no-highlight">337</i>&nbsp;        new MarketClientFactory().getMarketClient(MarketClientFactory.MarketClientTypes.Yahoo);</b>
+<b class="nc"><i class="no-highlight">338</i>&nbsp;    printMenuTitle(&quot;***VIEW HISTORICAL DATA***&quot;);</b>
+<b class="nc"><i class="no-highlight">339</i>&nbsp;    List&lt;String&gt; inputList = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">340</i>&nbsp;    while (true) {
+<b class="nc"><i class="no-highlight">341</i>&nbsp;      String input = getStringInput(&quot;Enter symbols of the assets you wish to retrieve &quot;</b>
+<i class="no-highlight">342</i>&nbsp;          + &quot;historical data one at a time:\nEnter &#39;N&#39; to stop input...&quot;);
+<b class="nc"><i class="no-highlight">343</i>&nbsp;      if (input.equalsIgnoreCase(&quot;N&quot;)) {</b>
+<b class="nc"><i class="no-highlight">344</i>&nbsp;        break;</b>
+<i class="no-highlight">345</i>&nbsp;      } else {
+<b class="nc"><i class="no-highlight">346</i>&nbsp;        if (client.checkAssetSymbol(input)) {</b>
+<b class="nc"><i class="no-highlight">347</i>&nbsp;          inputList.add(input);</b>
+<i class="no-highlight">348</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">349</i>&nbsp;          printError(&quot;Invalid asset symbol...&quot;);</b>
+<i class="no-highlight">350</i>&nbsp;        }
+<i class="no-highlight">351</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">352</i>&nbsp;    }</b>
+<i class="no-highlight">353</i>&nbsp;
+<b class="nc"><i class="no-highlight">354</i>&nbsp;    String interval = getStringInput(&quot;Enter data interval: (1m, 5m, 15m, 1d, 1wk, 1mo)&quot;);</b>
+<b class="nc"><i class="no-highlight">355</i>&nbsp;    String range = getStringInput(&quot;Enter the range of the data you require: (1d, 5d, 1mo, &quot;</b>
+<i class="no-highlight">356</i>&nbsp;        + &quot;3mo, 6mo, 1y, 5y, max)&quot;);
+<b class="nc"><i class="no-highlight">357</i>&nbsp;    List&lt;AssetQuote&gt; historicalData = portfolioSystem.getHistoricalData(inputList, interval, range);</b>
+<b class="nc"><i class="no-highlight">358</i>&nbsp;    for (AssetQuote assetQuote : historicalData) {</b>
+<b class="nc"><i class="no-highlight">359</i>&nbsp;      assetQuote.historicDataToString();</b>
+<b class="nc"><i class="no-highlight">360</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">361</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">362</i>&nbsp;  }
+<i class="no-highlight">363</i>&nbsp;
+<i class="no-highlight">364</i>&nbsp;  /**
+<i class="no-highlight">365</i>&nbsp;   * This method processes the purchased assets.
+<i class="no-highlight">366</i>&nbsp;   */
+<i class="no-highlight">367</i>&nbsp;  private static void processPurchaseAssets() {
+<b class="nc"><i class="no-highlight">368</i>&nbsp;    printMenuTitle(&quot;***PURCHASE ASSET(s)***&quot;);</b>
+<b class="nc"><i class="no-highlight">369</i>&nbsp;    String input = getStringInput(&quot;Please enter symbol of asset you wish to purchase:&quot;);</b>
+<b class="nc"><i class="no-highlight">370</i>&nbsp;    double amount = getUserInput(&quot;Please enter amount you wish to purchase:&quot;, Double::parseDouble);</b>
+<b class="nc"><i class="no-highlight">371</i>&nbsp;    if (portfolioSystem.purchaseAsset(input, amount)) {</b>
+<b class="nc"><i class="no-highlight">372</i>&nbsp;      System.out.println(&quot;You have purchased &quot; + amount + &quot; of &quot; + input);</b>
+<i class="no-highlight">373</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">374</i>&nbsp;      printError(&quot;Invalid asset symbol...&quot;);</b>
+<i class="no-highlight">375</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">376</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">377</i>&nbsp;  }
+<i class="no-highlight">378</i>&nbsp;
+<i class="no-highlight">379</i>&nbsp;  /**
+<i class="no-highlight">380</i>&nbsp;   * This method performs the processing of sold assets.
+<i class="no-highlight">381</i>&nbsp;   */
+<i class="no-highlight">382</i>&nbsp;  private static void processSellAssets() {
+<b class="nc"><i class="no-highlight">383</i>&nbsp;    printMenuTitle(&quot;***SELL ASSET(s)***&quot;);</b>
+<b class="nc"><i class="no-highlight">384</i>&nbsp;    String input = getStringInput(&quot;Please enter symbol of asset you wish to sell:&quot;);</b>
+<b class="nc"><i class="no-highlight">385</i>&nbsp;    double amount = getUserInput(&quot;Please enter amount you wish to sell:&quot;, Double::parseDouble);</b>
+<b class="nc"><i class="no-highlight">386</i>&nbsp;    boolean success = portfolioSystem.sellAsset(input, amount);</b>
+<i class="no-highlight">387</i>&nbsp;
+<b class="nc"><i class="no-highlight">388</i>&nbsp;    if (success) {</b>
+<b class="nc"><i class="no-highlight">389</i>&nbsp;      System.out.println(amount + &quot; of &quot; + input + &quot; sold.&quot;);</b>
+<i class="no-highlight">390</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">391</i>&nbsp;      printError(&quot;Unable to process asset sale. Please check inputs and try again.&quot;);</b>
+<i class="no-highlight">392</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">393</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">394</i>&nbsp;  }
+<i class="no-highlight">395</i>&nbsp;
+<i class="no-highlight">396</i>&nbsp;  /**
+<i class="no-highlight">397</i>&nbsp;   * This method adds funds to the portofolio.
+<i class="no-highlight">398</i>&nbsp;   */
+<i class="no-highlight">399</i>&nbsp;  private static void processAddFunds() {
+<b class="nc"><i class="no-highlight">400</i>&nbsp;    printMenuTitle(&quot;***ADD FUNDS***&quot;);</b>
+<b class="nc"><i class="no-highlight">401</i>&nbsp;    double amount = getUserInput(&quot;Enter deposit amount:&quot;, Double::parseDouble);</b>
+<b class="nc"><i class="no-highlight">402</i>&nbsp;    portfolioSystem.addFunds(amount);</b>
+<b class="nc"><i class="no-highlight">403</i>&nbsp;    System.out.println(&quot;Funds added.&quot;);</b>
+<b class="nc"><i class="no-highlight">404</i>&nbsp;    System.out.println(&quot;Current account balance: &quot; + portfolioSystem.getAvailableFunds());</b>
+<b class="nc"><i class="no-highlight">405</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">406</i>&nbsp;  }
+<i class="no-highlight">407</i>&nbsp;
+<i class="no-highlight">408</i>&nbsp;  /**
+<i class="no-highlight">409</i>&nbsp;   * This method withdraws funds from the portofolio.
+<i class="no-highlight">410</i>&nbsp;   */
+<i class="no-highlight">411</i>&nbsp;  private static void processWithdrawFunds() {
+<b class="nc"><i class="no-highlight">412</i>&nbsp;    printMenuTitle(&quot;***WITHDRAW FUNDS***&quot;);</b>
+<b class="nc"><i class="no-highlight">413</i>&nbsp;    double amount = getUserInput(&quot;Enter withdrawal amount:&quot;, Double::parseDouble);</b>
+<i class="no-highlight">414</i>&nbsp;
+<b class="nc"><i class="no-highlight">415</i>&nbsp;    boolean success = portfolioSystem.withdrawFunds(amount);</b>
+<b class="nc"><i class="no-highlight">416</i>&nbsp;    if (success) {</b>
+<b class="nc"><i class="no-highlight">417</i>&nbsp;      System.out.println(&quot;Funds successfully withdrawn.&quot;);</b>
+<b class="nc"><i class="no-highlight">418</i>&nbsp;      System.out.println(&quot;Current account balance: &quot; + portfolioSystem.getAvailableFunds());</b>
+<i class="no-highlight">419</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">420</i>&nbsp;      printError(&quot;Unable to withdraw funds. Insufficient funds.&quot;);</b>
+<i class="no-highlight">421</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">422</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">423</i>&nbsp;  }
+<i class="no-highlight">424</i>&nbsp;
+<i class="no-highlight">425</i>&nbsp;  /**
+<i class="no-highlight">426</i>&nbsp;   * This method views all assets that contain withholding.
+<i class="no-highlight">427</i>&nbsp;   */
+<i class="no-highlight">428</i>&nbsp;  private static void processViewAssetsWithHoldings() {
+<b class="nc"><i class="no-highlight">429</i>&nbsp;    printMenuTitle(&quot;***VIEW ASSETS WITH HOLDINGS***&quot;);</b>
+<b class="nc"><i class="no-highlight">430</i>&nbsp;    String inputSymbol = getStringInput(&quot;Please enter stock symbol:&quot;);</b>
+<b class="nc"><i class="no-highlight">431</i>&nbsp;    List&lt;Asset&gt; tempList = portfolioSystem.getAssetsWithHoldings(inputSymbol.toUpperCase());</b>
+<b class="nc"><i class="no-highlight">432</i>&nbsp;    for (Asset asset : tempList) {</b>
+<b class="nc"><i class="no-highlight">433</i>&nbsp;      System.out.println(asset.toString());</b>
+<b class="nc"><i class="no-highlight">434</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">435</i>&nbsp;    System.out.println();</b>
+<b class="nc"><i class="no-highlight">436</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">437</i>&nbsp;  }
+<i class="no-highlight">438</i>&nbsp;
+<i class="no-highlight">439</i>&nbsp;  /**
+<i class="no-highlight">440</i>&nbsp;   * This method shows the available funds that can be used to invest in stocks.
+<i class="no-highlight">441</i>&nbsp;   */
+<i class="no-highlight">442</i>&nbsp;  private static void processViewAvailableFunds() {
+<b class="nc"><i class="no-highlight">443</i>&nbsp;    printMenuTitle(&quot;***VIEW AVAILABLE FUNDS***&quot;);</b>
+<b class="nc"><i class="no-highlight">444</i>&nbsp;    System.out.println(portfolioSystem.getAvailableFunds());</b>
+<b class="nc"><i class="no-highlight">445</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">446</i>&nbsp;  }
+<i class="no-highlight">447</i>&nbsp;
+<i class="no-highlight">448</i>&nbsp;  /**
+<i class="no-highlight">449</i>&nbsp;   * This method ends the current process and gives the user
+<i class="no-highlight">450</i>&nbsp;   * the possibility to return to the main menu.
+<i class="no-highlight">451</i>&nbsp;   */
+<i class="no-highlight">452</i>&nbsp;  private static void endProcess() {
+<b class="nc"><i class="no-highlight">453</i>&nbsp;    System.out.print(&quot;Press any key to return to the menu...&quot;);</b>
+<b class="nc"><i class="no-highlight">454</i>&nbsp;    ScannerInput.getLine();</b>
+<i class="no-highlight">455</i>&nbsp;  }
+<i class="no-highlight">456</i>&nbsp;
+<i class="no-highlight">457</i>&nbsp;  /**
+<i class="no-highlight">458</i>&nbsp;   * This method shows all trending stocks sorted by region.
+<i class="no-highlight">459</i>&nbsp;   * User enters a specific region, based on which the trending stocks are displayed.
+<i class="no-highlight">460</i>&nbsp;   */
+<i class="no-highlight">461</i>&nbsp;  private static void processViewTrendingStocksByRegion() {
+<b class="nc"><i class="no-highlight">462</i>&nbsp;    printMenuTitle(&quot;***VIEW TRENDING STOCKS***&quot;);</b>
+<b class="nc"><i class="no-highlight">463</i>&nbsp;    String input = getStringInput(&quot;Enter region:&quot;);</b>
+<b class="nc"><i class="no-highlight">464</i>&nbsp;    List&lt;String&gt; trendingStocks = portfolioSystem.getTrendingStocks(input);</b>
+<b class="nc"><i class="no-highlight">465</i>&nbsp;    for (String assetSymbol : trendingStocks) {</b>
+<b class="nc"><i class="no-highlight">466</i>&nbsp;      System.out.println(assetSymbol);</b>
+<b class="nc"><i class="no-highlight">467</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">468</i>&nbsp;    endProcess();</b>
+<i class="no-highlight">469</i>&nbsp;  }
+<i class="no-highlight">470</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>

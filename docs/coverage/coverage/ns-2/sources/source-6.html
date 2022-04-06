@@ -1,0 +1,301 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PortfolioSystem</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: PortfolioSystem (com.lyit.csd.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">PortfolioSystem</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.domain;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.lyit.csd.domain.Asset;
+<i class="no-highlight">4</i>&nbsp;import com.lyit.csd.marketapi.abstraction.MarketClient;
+<i class="no-highlight">5</i>&nbsp;import java.util.List;
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;/**
+<i class="no-highlight">8</i>&nbsp; * Interface implemented by {@link PortfolioManager}.
+<i class="no-highlight">9</i>&nbsp; */
+<i class="no-highlight">10</i>&nbsp;public interface PortfolioSystem {
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;  /* Notes: the current value of any asset should be calculated based on live value of that asset
+<i class="no-highlight">13</i>&nbsp;     retrieved from an appropriate web API such as Yahoo finance https://www.yahoofinanceapi.com/
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;     The format of String return values should be decided by the team. Think carefully about the
+<i class="no-highlight">16</i>&nbsp;     information that should be returned and how best to present that information.
+<i class="no-highlight">17</i>&nbsp;  */
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;  /**
+<i class="no-highlight">20</i>&nbsp;   * Add the specified amount in USD to the total cash funds available within the portfolio system.
+<i class="no-highlight">21</i>&nbsp;   *
+<i class="no-highlight">22</i>&nbsp;   * @param amount the amount of money in USD to add to the system.
+<i class="no-highlight">23</i>&nbsp;   */
+<i class="no-highlight">24</i>&nbsp;  void addFunds(double amount);
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;  /**
+<i class="no-highlight">27</i>&nbsp;   * Gets the assets which still have holdings.
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;   * @param assetSymbol the assetSymbol to search for holdings of.
+<i class="no-highlight">30</i>&nbsp;   * @return an array of the assets which have units owned.
+<i class="no-highlight">31</i>&nbsp;   */
+<i class="no-highlight">32</i>&nbsp;  List&lt;Asset&gt; getAssetsWithHoldings(String assetSymbol);
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;  /**
+<i class="no-highlight">35</i>&nbsp;   * Withdraw the specified amount in USD from the total cash funds available within the portfolio
+<i class="no-highlight">36</i>&nbsp;   * management system.
+<i class="no-highlight">37</i>&nbsp;   *
+<i class="no-highlight">38</i>&nbsp;   * @param amount the amount of money in USD to withdraw from the system.
+<i class="no-highlight">39</i>&nbsp;   * @return True if we have successfully withdrawn the funds (sufficient funds are available)
+<i class="no-highlight">40</i>&nbsp;   *        otherwise false.
+<i class="no-highlight">41</i>&nbsp;   */
+<i class="no-highlight">42</i>&nbsp;  boolean withdrawFunds(double amount);
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;  /**
+<i class="no-highlight">45</i>&nbsp;   * This method checks that an &lt;code&gt;assetSymbol&lt;/code&gt; is valid. In order to speed up checking
+<i class="no-highlight">46</i>&nbsp;   * and to reduce the number of calls we make to the {@link MarketClient}, we store/cache known
+<i class="no-highlight">47</i>&nbsp;   * good asset symbols after lookup.
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;   * @param assetSymbol the asset symbol to validate.
+<i class="no-highlight">50</i>&nbsp;   * @return boolean to indicate if symbol is valid.
+<i class="no-highlight">51</i>&nbsp;   */
+<i class="no-highlight">52</i>&nbsp;  boolean checkAssetSymbol(String assetSymbol);
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;  /**
+<i class="no-highlight">55</i>&nbsp;   * Record a purchase of the named asset if available funds &gt;= the total value of the assets (stock
+<i class="no-highlight">56</i>&nbsp;   * or cryptocurrency) being purchased. The price paid should be the real live price of the asset.
+<i class="no-highlight">57</i>&nbsp;   *
+<i class="no-highlight">58</i>&nbsp;   * @param assetSymbol the name of the asset (stock symbol or cryptocurrency) to purchase.
+<i class="no-highlight">59</i>&nbsp;   * @param amount      the amount of the asset to purchase.
+<i class="no-highlight">60</i>&nbsp;   * @return True if the asset is purchased successfully, otherwise False.
+<i class="no-highlight">61</i>&nbsp;   */
+<i class="no-highlight">62</i>&nbsp;  boolean purchaseAsset(String assetSymbol, double amount);
+<i class="no-highlight">63</i>&nbsp;
+<i class="no-highlight">64</i>&nbsp;  /**
+<i class="no-highlight">65</i>&nbsp;   * Record a sale of the named asset (stock or cryptocurrency) at the current live market value if
+<i class="no-highlight">66</i>&nbsp;   * we hold that asset. The sale price should be the real live price of the asset at the time of
+<i class="no-highlight">67</i>&nbsp;   * sale retrieved from an appropriate web API. The revenue generated from the sale should be added
+<i class="no-highlight">68</i>&nbsp;   * to the total funds available to the user.
+<i class="no-highlight">69</i>&nbsp;   *
+<i class="no-highlight">70</i>&nbsp;   * &lt;p&gt;Business logic: If we hold &gt; 1 units of the specified asset (say 10 units of Microsoft stock
+<i class="no-highlight">71</i>&nbsp;   * MSFT), and the parameter amount is less than total units of the stock, we should sell the units
+<i class="no-highlight">72</i>&nbsp;   * that maximise our profit. Remember some of the stock could have been purchased on different
+<i class="no-highlight">73</i>&nbsp;   * dates and therefore have been purchased at different price points.
+<i class="no-highlight">74</i>&nbsp;   *
+<i class="no-highlight">75</i>&nbsp;   * @param assetSymbol the name of the asset (stock symbol or cryptocurrency) to sell.
+<i class="no-highlight">76</i>&nbsp;   * @param amount      the amount of the asset to sell.
+<i class="no-highlight">77</i>&nbsp;   * @return True if the asset is sold successfully, otherwise false (we may not have that asset in
+<i class="no-highlight">78</i>&nbsp;   *        our portfolio).
+<i class="no-highlight">79</i>&nbsp;   */
+<i class="no-highlight">80</i>&nbsp;  boolean sellAsset(String assetSymbol, double amount);
+<i class="no-highlight">81</i>&nbsp;
+<i class="no-highlight">82</i>&nbsp;  /**
+<i class="no-highlight">83</i>&nbsp;   * Returns a list of trending stocks symbols, their current market price and the days gain or loss
+<i class="no-highlight">84</i>&nbsp;   * in price and as a percentage. Yahoo finance provides this information for you.
+<i class="no-highlight">85</i>&nbsp;   *
+<i class="no-highlight">86</i>&nbsp;   * @param region a string country code specifying the region of interest. Examples include US, GB,
+<i class="no-highlight">87</i>&nbsp;   *               FR, DE, HK.
+<i class="no-highlight">88</i>&nbsp;   * @return a list of strings each representing trending stock symbols e.g. APPL, TSLA, BARC.
+<i class="no-highlight">89</i>&nbsp;   */
+<i class="no-highlight">90</i>&nbsp;  List&lt;String&gt; getTrendingStocks(String region);
+<i class="no-highlight">91</i>&nbsp;
+<i class="no-highlight">92</i>&nbsp;  /**
+<i class="no-highlight">93</i>&nbsp;   * Retrieve a set of historic data points for the specified assets.
+<i class="no-highlight">94</i>&nbsp;   *
+<i class="no-highlight">95</i>&nbsp;   * @param assetSymbols a list of strings representing the symbols of the assets for which we need
+<i class="no-highlight">96</i>&nbsp;   *                     to obtain Historic data.
+<i class="no-highlight">97</i>&nbsp;   * @param interval     a String representing the time interval between quotes. Valid values
+<i class="no-highlight">98</i>&nbsp;   *                     include 1m 5m 15m 1d 1wk 1mo.
+<i class="no-highlight">99</i>&nbsp;   * @param range        a String representing the time range over which we should obtain historic
+<i class="no-highlight">100</i>&nbsp;   *                     data for the specified assets. Valid values include 1d 5d, 1mo, 3mo, 6mo,
+<i class="no-highlight">101</i>&nbsp;   *                     1y, 5y, max. Where max represents the maximum available duration (lifetime
+<i class="no-highlight">102</i>&nbsp;   *                     of the asset).
+<i class="no-highlight">103</i>&nbsp;   * @return A list of assetQuotes objects.
+<i class="no-highlight">104</i>&nbsp;   */
+<i class="no-highlight">105</i>&nbsp;  List&lt;AssetQuote&gt; getHistoricalData(List&lt;String&gt; assetSymbols, String interval, String range);
+<i class="no-highlight">106</i>&nbsp;
+<i class="no-highlight">107</i>&nbsp;  /**
+<i class="no-highlight">108</i>&nbsp;   * Returns summary information on an exchange in the region specified.
+<i class="no-highlight">109</i>&nbsp;   *
+<i class="no-highlight">110</i>&nbsp;   * @param region   a string country code specifying the region of interest. Examples include US,
+<i class="no-highlight">111</i>&nbsp;   *                 GB, FR, DE, HK.
+<i class="no-highlight">112</i>&nbsp;   * @param exchange a string specifying the exchange we want information on. Examples include FTSE,
+<i class="no-highlight">113</i>&nbsp;   *                 DOW, NASDAQ, DAX.
+<i class="no-highlight">114</i>&nbsp;   * @return a String containing exchange summary information. Data includes at a minimum the
+<i class="no-highlight">115</i>&nbsp;   *        exchange name, exchange symbol, previous closing value, opening value, gain/loss
+<i class="no-highlight">116</i>&nbsp;   *        since opening. Add any additional data you feel is relevant.
+<i class="no-highlight">117</i>&nbsp;   */
+<i class="no-highlight">118</i>&nbsp;  String getExchangeSummary(String region, String exchange);
+<i class="no-highlight">119</i>&nbsp;
+<i class="no-highlight">120</i>&nbsp;  /**
+<i class="no-highlight">121</i>&nbsp;   * Retrieve realtime quote data for the assets within the list assetNames from the online
+<i class="no-highlight">122</i>&nbsp;   * exchange.
+<i class="no-highlight">123</i>&nbsp;   *
+<i class="no-highlight">124</i>&nbsp;   * @param assetNames a list of asset symbols for example, &quot;Bitcoin-USD&quot;, &quot;Appl&quot;, &quot;TSLA&quot;.
+<i class="no-highlight">125</i>&nbsp;   * @return A list of AssetQuote objects. Return an empty list if we have no assets in our
+<i class="no-highlight">126</i>&nbsp;   *        portfolio.
+<i class="no-highlight">127</i>&nbsp;   */
+<i class="no-highlight">128</i>&nbsp;  List&lt;AssetQuote&gt; getAssetInformation(List&lt;String&gt; assetNames);
+<i class="no-highlight">129</i>&nbsp;
+<i class="no-highlight">130</i>&nbsp;  /**
+<i class="no-highlight">131</i>&nbsp;   * Retrieve realtime quote data for the assets within the list assetNames from the online
+<i class="no-highlight">132</i>&nbsp;   * exchange.
+<i class="no-highlight">133</i>&nbsp;   *
+<i class="no-highlight">134</i>&nbsp;   * @param assetSymbols a list of asset symbols for example, &quot;Bitcoin-USD&quot;, &quot;Appl&quot;, &quot;TSLA&quot;.
+<i class="no-highlight">135</i>&nbsp;   * @return A list of AssetQuote objects.
+<i class="no-highlight">136</i>&nbsp;   */
+<i class="no-highlight">137</i>&nbsp;  List&lt;AssetQuote&gt; getAssetQuotes(List&lt;String&gt; assetSymbols);
+<i class="no-highlight">138</i>&nbsp;
+<i class="no-highlight">139</i>&nbsp;  /**
+<i class="no-highlight">140</i>&nbsp;   * Retrieve realtime quote data from the online exchange.
+<i class="no-highlight">141</i>&nbsp;   *
+<i class="no-highlight">142</i>&nbsp;   * @param assetSymbol an asset symbol for example, &quot;Bitcoin-USD&quot;, &quot;Appl&quot;, &quot;TSLA&quot;.
+<i class="no-highlight">143</i>&nbsp;   * @return An AssetQuote object.
+<i class="no-highlight">144</i>&nbsp;   */
+<i class="no-highlight">145</i>&nbsp;  AssetQuote getAssetQuote(String assetSymbol);
+<i class="no-highlight">146</i>&nbsp;
+<i class="no-highlight">147</i>&nbsp;  /** Get the available funds in the portfolio.
+<i class="no-highlight">148</i>&nbsp;
+<i class="no-highlight">149</i>&nbsp;   * @return the available &#39;cash&#39; balance available. This the balance of the funds used to
+<i class="no-highlight">150</i>&nbsp;   *        purchase new assets. The proceeds of asset sales is added to this balance.
+<i class="no-highlight">151</i>&nbsp;   */
+<i class="no-highlight">152</i>&nbsp;  double getAvailableFunds();
+<i class="no-highlight">153</i>&nbsp;
+<i class="no-highlight">154</i>&nbsp;  /**
+<i class="no-highlight">155</i>&nbsp;   * Retrieve the current value of all of the assets in the portfolio based on the current live
+<i class="no-highlight">156</i>&nbsp;   * value of each asset.
+<i class="no-highlight">157</i>&nbsp;   *
+<i class="no-highlight">158</i>&nbsp;   * @return a double representing the value of the portfolio in USD.
+<i class="no-highlight">159</i>&nbsp;   */
+<i class="no-highlight">160</i>&nbsp;  double getPortfolioValue();
+<i class="no-highlight">161</i>&nbsp;
+<i class="no-highlight">162</i>&nbsp;  /**
+<i class="no-highlight">163</i>&nbsp;   * Returns a formatted string detailing the name, symbol, average purchase price, current value
+<i class="no-highlight">164</i>&nbsp;   * and amount of each asset within the portfolio. The difference in average purchase price and
+<i class="no-highlight">165</i>&nbsp;   * current price should also be displayed in both USD and as a percentage.
+<i class="no-highlight">166</i>&nbsp;   *
+<i class="no-highlight">167</i>&nbsp;   * @return a String containing summary information on the assets in the portfolio.
+<i class="no-highlight">168</i>&nbsp;   */
+<i class="no-highlight">169</i>&nbsp;  String listAllInvestments();
+<i class="no-highlight">170</i>&nbsp;
+<i class="no-highlight">171</i>&nbsp;  /**
+<i class="no-highlight">172</i>&nbsp;   * Retrieve a formatted string containing all of the assets within the portfolio of the specified
+<i class="no-highlight">173</i>&nbsp;   * asset type (&quot;stock&quot; or &quot;cryptocurrencies&quot;). String contains the name, symbol, average purchase
+<i class="no-highlight">174</i>&nbsp;   * price, current value and amount of each asset within the portfolio. The difference in average
+<i class="no-highlight">175</i>&nbsp;   * purchase price and current price are displayed in USD and as a percentage.
+<i class="no-highlight">176</i>&nbsp;   *
+<i class="no-highlight">177</i>&nbsp;   * @param assetType a string specifying the asset type. Valid values are &quot;stock&quot; or &quot;crypto&quot;.
+<i class="no-highlight">178</i>&nbsp;   * @return a formatted String containing summary of all of the investments within the portfolio.
+<i class="no-highlight">179</i>&nbsp;   *        Return an empty string if we have no assets within our portfolio.
+<i class="no-highlight">180</i>&nbsp;   */
+<i class="no-highlight">181</i>&nbsp;  String listPortfolioAssetsByType(String assetType);
+<i class="no-highlight">182</i>&nbsp;
+<i class="no-highlight">183</i>&nbsp;  /**
+<i class="no-highlight">184</i>&nbsp;   * Retrieve a formatted String containing details on all of the assets within the portfolio
+<i class="no-highlight">185</i>&nbsp;   * matching the assetName in full or partially. String contains the name, symbol, average purchase
+<i class="no-highlight">186</i>&nbsp;   * price, current value and amount of each asset within the portfolio. The difference in average
+<i class="no-highlight">187</i>&nbsp;   * purchase price and current price are displayed in USD and as a percentage.
+<i class="no-highlight">188</i>&nbsp;   *
+<i class="no-highlight">189</i>&nbsp;   * @param assetNames a list of Strings containing asset symbols such as &quot;MSFT&quot; or &quot;BTC-USD&quot; or
+<i class="no-highlight">190</i>&nbsp;   *                   full name &quot;Bitcoin USD&quot; or partial string &quot;Bitco&quot;.
+<i class="no-highlight">191</i>&nbsp;   * @return A formatted String containing summary information for the assetNames provided in the
+<i class="no-highlight">192</i>&nbsp;   *        list. Return an empty string if we have no matching assets.
+<i class="no-highlight">193</i>&nbsp;   */
+<i class="no-highlight">194</i>&nbsp;  String listPortfolioAssetsByName(List&lt;String&gt; assetNames);
+<i class="no-highlight">195</i>&nbsp;
+<i class="no-highlight">196</i>&nbsp;
+<i class="no-highlight">197</i>&nbsp;  /**
+<i class="no-highlight">198</i>&nbsp;   * Retrieve a formatted String containing summary information for all assets within the portfolio
+<i class="no-highlight">199</i>&nbsp;   * purchased between the dates startTimeStamp and endTimeStamp. Summary information contains the
+<i class="no-highlight">200</i>&nbsp;   * purchase price, current price, difference between the purchase and sale price (in USD and as a
+<i class="no-highlight">201</i>&nbsp;   * percentage).
+<i class="no-highlight">202</i>&nbsp;   *
+<i class="no-highlight">203</i>&nbsp;   * &lt;p&gt;If the several units of the asset have been purchased at different time points between the
+<i class="no-highlight">204</i>&nbsp;   * startTimeStamp and endTimeStamp, list each asset purchase separately by date (oldest to most
+<i class="no-highlight">205</i>&nbsp;   * recent).
+<i class="no-highlight">206</i>&nbsp;   *
+<i class="no-highlight">207</i>&nbsp;   * @param startTimeStamp a UNIX timestamp representing the start range date.
+<i class="no-highlight">208</i>&nbsp;   * @param endTimeStamp   a UNIX timestamp representing the end range date.
+<i class="no-highlight">209</i>&nbsp;   * @return A formatted String containing summary information for all of the assets purchased
+<i class="no-highlight">210</i>&nbsp;   *        between the startTimeStamp and endTimeStamp. Return an empty string if we have
+<i class="no-highlight">211</i>&nbsp;   *        no matching assets in our portfolio.
+<i class="no-highlight">212</i>&nbsp;   */
+<i class="no-highlight">213</i>&nbsp;  String listPortfolioPurchasesInRange(long startTimeStamp, long endTimeStamp);
+<i class="no-highlight">214</i>&nbsp;
+<i class="no-highlight">215</i>&nbsp;
+<i class="no-highlight">216</i>&nbsp;  /**
+<i class="no-highlight">217</i>&nbsp;   * Retrieve a formatted string containing a summary of all of the assets sales between the dates
+<i class="no-highlight">218</i>&nbsp;   * startTimeStamp and endTimeStamp. Summary information contains the average purchase price for
+<i class="no-highlight">219</i>&nbsp;   * each asset, the sale price and the profit or loss (in USD and as a percentage).
+<i class="no-highlight">220</i>&nbsp;   *
+<i class="no-highlight">221</i>&nbsp;   * &lt;p&gt;If the several units of the asset have been sold at different time points between the
+<i class="no-highlight">222</i>&nbsp;   * startTimeStamp and endTimeStamp, list by date (oldest to most recent) each of those individual
+<i class="no-highlight">223</i>&nbsp;   * sales.
+<i class="no-highlight">224</i>&nbsp;   *
+<i class="no-highlight">225</i>&nbsp;   * @param startTimeStamp a UNIX timestamp representing the start range date.
+<i class="no-highlight">226</i>&nbsp;   * @param endTimeStamp   a UNIX timestamp representing the end range date.
+<i class="no-highlight">227</i>&nbsp;   * @return A formatted String containing summary information for all of the assets sold between
+<i class="no-highlight">228</i>&nbsp;   *        the startTimeStamp and endTimeStamp. Return an empty string if we have no
+<i class="no-highlight">229</i>&nbsp;   *        matching assets in our portfolio.
+<i class="no-highlight">230</i>&nbsp;   */
+<i class="no-highlight">231</i>&nbsp;  String listPortfolioSalesInRange(long startTimeStamp, long endTimeStamp);
+<i class="no-highlight">232</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>

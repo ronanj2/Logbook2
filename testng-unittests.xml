@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Unit Test Suite">
+  <test thread-count="5" name="contemporary-software-development-ca2-2021-22-team-project-team-3">
+    <classes>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_AddFundsUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetAssetInformationUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetPortfolioValueUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_GetTrendingStocksUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_PurchaseAssetUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_SellAssetUTest"/>
+      <class name="com.lyit.csd.tests.unit.PortfolioManager_withdrawFundsUTest"/>
+    </classes>
+  </test> <!-- contemporary-software-development-ca2-2021-22-team-project-team-3 -->
+</suite> <!-- Default Suite -->

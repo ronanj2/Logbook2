@@ -1,0 +1,391 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > YahooClient</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.lyit.csd.marketapi.yahoo</a>
+</div>
+
+<h1>Coverage Summary for Class: YahooClient (com.lyit.csd.marketapi.yahoo)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">YahooClient</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    69.4%
+  </span>
+  <span class="absValue">
+    (75/108)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.lyit.csd.marketapi.yahoo;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+<i class="no-highlight">4</i>&nbsp;import com.google.gson.JsonArray;
+<i class="no-highlight">5</i>&nbsp;import com.google.gson.JsonElement;
+<i class="no-highlight">6</i>&nbsp;import com.google.gson.JsonObject;
+<i class="no-highlight">7</i>&nbsp;import com.google.gson.JsonParser;
+<i class="no-highlight">8</i>&nbsp;import com.lyit.csd.domain.AssetQuote;
+<i class="no-highlight">9</i>&nbsp;import com.lyit.csd.marketapi.abstraction.MarketClient;
+<i class="no-highlight">10</i>&nbsp;import com.lyit.csd.marketapi.yahoo.quote.Result;
+<i class="no-highlight">11</i>&nbsp;import com.lyit.csd.marketapi.yahoo.quote.Root;
+<i class="no-highlight">12</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">13</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">14</i>&nbsp;import java.util.List;
+<i class="no-highlight">15</i>&nbsp;import okhttp3.OkHttpClient;
+<i class="no-highlight">16</i>&nbsp;import okhttp3.Request;
+<i class="no-highlight">17</i>&nbsp;import okhttp3.Response;
+<i class="no-highlight">18</i>&nbsp;import okhttp3.ResponseBody;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;/**
+<i class="no-highlight">21</i>&nbsp; * YahooClient class implements MarketClient interface
+<i class="no-highlight">22</i>&nbsp; * to retrieve data from Yahoo Finance API.
+<i class="no-highlight">23</i>&nbsp; */
+<i class="no-highlight">24</i>&nbsp;public class YahooClient implements MarketClient {
+<i class="no-highlight">25</i>&nbsp;  private String baseUrl;
+<i class="no-highlight">26</i>&nbsp;  private String apiKey;
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;  /**
+<i class="no-highlight">29</i>&nbsp;   * Constructor for the {@link YahooClient} class.
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;   * @param url URL for the Yahoo Finance API.
+<i class="no-highlight">32</i>&nbsp;   * @param apiKey apiKey to use for authenticating with Yahoo Finance API.
+<i class="no-highlight">33</i>&nbsp;   */
+<b class="fc"><i class="no-highlight">34</i>&nbsp;  public YahooClient(String url, String apiKey) {</b>
+<b class="fc"><i class="no-highlight">35</i>&nbsp;    this.baseUrl = url;</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;    this.apiKey = apiKey;</b>
+<i class="no-highlight">37</i>&nbsp;  }
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;  /**
+<i class="no-highlight">40</i>&nbsp;   * Checks whether the symbol passed in returns data.
+<i class="no-highlight">41</i>&nbsp;   *
+<i class="no-highlight">42</i>&nbsp;   * @param assetSymbol symbol to be verified.
+<i class="no-highlight">43</i>&nbsp;   * @return a boolean - true if the symbol returns usable data
+<i class="no-highlight">44</i>&nbsp;   */
+<i class="no-highlight">45</i>&nbsp;  public boolean checkAssetSymbol(String assetSymbol) {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;    AssetQuote assetQuote = getQuote(assetSymbol);</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;    return assetQuote != null;</b>
+<i class="no-highlight">48</i>&nbsp;  }
+<i class="no-highlight">49</i>&nbsp;
+<i class="no-highlight">50</i>&nbsp;  /**
+<i class="no-highlight">51</i>&nbsp;   * Method to retrieve historic data regarding provided
+<i class="no-highlight">52</i>&nbsp;   * stock tickers between predefined time interval and range.
+<i class="no-highlight">53</i>&nbsp;   *
+<i class="no-highlight">54</i>&nbsp;   * @param assetSymbols list of stock tickers
+<i class="no-highlight">55</i>&nbsp;   * @param interval granularity of the returned data.
+<i class="no-highlight">56</i>&nbsp;   * @param range time period of which data is to be gathered.
+<i class="no-highlight">57</i>&nbsp;   * @return list of AssetQuote objects containing individual stock histories.
+<i class="no-highlight">58</i>&nbsp;   */
+<i class="no-highlight">59</i>&nbsp;  public List&lt;AssetQuote&gt; getHistoricalInfo(List&lt;String&gt; assetSymbols,
+<i class="no-highlight">60</i>&nbsp;                                            String interval, String range) {
+<i class="no-highlight">61</i>&nbsp;    //Remove invalid symbols
+<b class="fc"><i class="no-highlight">62</i>&nbsp;    assetSymbols.removeIf(s -&gt; !checkAssetSymbol(s));</b>
+<i class="no-highlight">63</i>&nbsp;    //Construct URL
+<b class="fc"><i class="no-highlight">64</i>&nbsp;    String assetSymbolsSeparated = String.join(&quot;,&quot;, assetSymbols);</b>
+<b class="fc"><i class="no-highlight">65</i>&nbsp;    String operation = &quot;/v8/finance/spark&quot;;</b>
+<b class="fc"><i class="no-highlight">66</i>&nbsp;    String parameters = &quot;interval=&quot; + interval + &quot;&amp;range=&quot;</b>
+<i class="no-highlight">67</i>&nbsp;            + range + &quot;&amp;symbols=&quot; + assetSymbolsSeparated;
+<b class="fc"><i class="no-highlight">68</i>&nbsp;    String url = baseUrl + operation + &quot;?&quot; + parameters;</b>
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;    //Parse response &amp; map onto AssetQuote object
+<b class="fc"><i class="no-highlight">71</i>&nbsp;    List&lt;AssetQuote&gt; assetQuotes = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">72</i>&nbsp;
+<i class="no-highlight">73</i>&nbsp;    // Parse the response and return a quote
+<i class="no-highlight">74</i>&nbsp;    try {
+<b class="fc"><i class="no-highlight">75</i>&nbsp;      for (String s : assetSymbols) {</b>
+<b class="nc"><i class="no-highlight">76</i>&nbsp;        Response response = makeGetRequest(url);</b>
+<b class="nc"><i class="no-highlight">77</i>&nbsp;        ResponseBody responseBody = response.body();</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;        AssetQuote assetQuote = new AssetQuote(s);</b>
+<i class="no-highlight">79</i>&nbsp;
+<i class="no-highlight">80</i>&nbsp;        //Convert json response into JsonElement -&gt; JsonObject -&gt; JsonArray
+<b class="nc"><i class="no-highlight">81</i>&nbsp;        JsonElement jsonElement = new JsonParser().parse(responseBody.string());</b>
+<b class="nc"><i class="no-highlight">82</i>&nbsp;        JsonObject jsonObject = jsonElement.getAsJsonObject();</b>
+<b class="nc"><i class="no-highlight">83</i>&nbsp;        jsonObject = jsonObject.getAsJsonObject(s);</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;        JsonArray timestampArray = jsonObject.getAsJsonArray(&quot;timestamp&quot;);</b>
+<i class="no-highlight">85</i>&nbsp;
+<i class="no-highlight">86</i>&nbsp;        //Extract data from JsonArray containing timestamp info
+<b class="nc"><i class="no-highlight">87</i>&nbsp;        for (int i = 0; i &lt; timestampArray.size(); i++) {</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;          JsonElement temp = timestampArray.get(i);</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;          long value = temp.getAsLong();</b>
+<b class="nc"><i class="no-highlight">90</i>&nbsp;          assetQuote.addTimeStampToList(value);</b>
+<i class="no-highlight">91</i>&nbsp;        }
+<i class="no-highlight">92</i>&nbsp;
+<b class="nc"><i class="no-highlight">93</i>&nbsp;        JsonArray closeArray = jsonObject.getAsJsonArray(&quot;close&quot;);</b>
+<i class="no-highlight">94</i>&nbsp;
+<i class="no-highlight">95</i>&nbsp;        //Extract data from JsonArray containing closing price info
+<b class="nc"><i class="no-highlight">96</i>&nbsp;        for (int i = 0; i &lt; closeArray.size(); i++) {</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;          JsonElement temp = closeArray.get(i);</b>
+<b class="nc"><i class="no-highlight">98</i>&nbsp;          double value = temp.getAsDouble();</b>
+<b class="nc"><i class="no-highlight">99</i>&nbsp;          assetQuote.addClosingPriceToList(value);</b>
+<i class="no-highlight">100</i>&nbsp;        }
+<i class="no-highlight">101</i>&nbsp;        //Add assetQuote object to list
+<b class="nc"><i class="no-highlight">102</i>&nbsp;        assetQuotes.add(assetQuote);</b>
+<b class="nc"><i class="no-highlight">103</i>&nbsp;      }</b>
+<b class="nc"><i class="no-highlight">104</i>&nbsp;    } catch (Exception e) {</b>
+<b class="nc"><i class="no-highlight">105</i>&nbsp;      e.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">106</i>&nbsp;    }</b>
+<b class="fc"><i class="no-highlight">107</i>&nbsp;    return assetQuotes;</b>
+<i class="no-highlight">108</i>&nbsp;  }
+<i class="no-highlight">109</i>&nbsp;
+<i class="no-highlight">110</i>&nbsp;  /**
+<i class="no-highlight">111</i>&nbsp;   * Queries the API for live information about the specified stock ticker.
+<i class="no-highlight">112</i>&nbsp;   *
+<i class="no-highlight">113</i>&nbsp;   * @param assetSymbol symbol to retrieve information about.
+<i class="no-highlight">114</i>&nbsp;   * @return an AssetQuote object containing up-to-date market info
+<i class="no-highlight">115</i>&nbsp;   */
+<i class="no-highlight">116</i>&nbsp;  public AssetQuote getQuote(String assetSymbol) {
+<b class="fc"><i class="no-highlight">117</i>&nbsp;    List&lt;String&gt; assetSymbols = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">118</i>&nbsp;    assetSymbols.add(assetSymbol);</b>
+<b class="fc"><i class="no-highlight">119</i>&nbsp;    List&lt;AssetQuote&gt; assetQuotes = getQuote(assetSymbols);</b>
+<i class="no-highlight">120</i>&nbsp;
+<b class="fc"><i class="no-highlight">121</i>&nbsp;    if (assetQuotes.size() == 0) {</b>
+<b class="fc"><i class="no-highlight">122</i>&nbsp;      return null;</b>
+<i class="no-highlight">123</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">124</i>&nbsp;    return assetQuotes.get(0);</b>
+<i class="no-highlight">125</i>&nbsp;  }
+<i class="no-highlight">126</i>&nbsp;
+<i class="no-highlight">127</i>&nbsp;  /**
+<i class="no-highlight">128</i>&nbsp;   * Fetches live market data on each element in list of stock tickers.
+<i class="no-highlight">129</i>&nbsp;   *
+<i class="no-highlight">130</i>&nbsp;   * @param assetSymbols list of stock symbols
+<i class="no-highlight">131</i>&nbsp;   * @return list of AssetQuote objects containing current market data.
+<i class="no-highlight">132</i>&nbsp;   */
+<i class="no-highlight">133</i>&nbsp;  public List&lt;AssetQuote&gt; getQuote(List&lt;String&gt; assetSymbols) {
+<b class="fc"><i class="no-highlight">134</i>&nbsp;    String assetSymbolsSeparated = String.join(&quot;,&quot;, assetSymbols);</b>
+<b class="fc"><i class="no-highlight">135</i>&nbsp;    String operation = &quot;/v6/finance/quote&quot;;</b>
+<b class="fc"><i class="no-highlight">136</i>&nbsp;    String parameters = &quot;region=US&amp;lang=en&amp;symbols=&quot; + assetSymbolsSeparated;</b>
+<b class="fc"><i class="no-highlight">137</i>&nbsp;    String url = baseUrl + operation + &quot;?&quot; + parameters;</b>
+<b class="fc"><i class="no-highlight">138</i>&nbsp;    Response response = makeGetRequest(url);</b>
+<b class="fc"><i class="no-highlight">139</i>&nbsp;    ResponseBody responseBody = response.body();</b>
+<i class="no-highlight">140</i>&nbsp;
+<i class="no-highlight">141</i>&nbsp;    // Parse the response and return a quote
+<b class="fc"><i class="no-highlight">142</i>&nbsp;    ObjectMapper om = new ObjectMapper();</b>
+<b class="fc"><i class="no-highlight">143</i>&nbsp;    List&lt;AssetQuote&gt; assetQuotes = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">144</i>&nbsp;
+<i class="no-highlight">145</i>&nbsp;    try {
+<b class="fc"><i class="no-highlight">146</i>&nbsp;      Root root = om.readValue(responseBody.string(), Root.class);</b>
+<i class="no-highlight">147</i>&nbsp;
+<b class="fc"><i class="no-highlight">148</i>&nbsp;      if (root.quoteResponse != null) {</b>
+<b class="fc"><i class="no-highlight">149</i>&nbsp;        for (Result result : root.quoteResponse.result) {</b>
+<b class="fc"><i class="no-highlight">150</i>&nbsp;          String assetQuoteName = result.displayName;</b>
+<b class="fc"><i class="no-highlight">151</i>&nbsp;          if (assetQuoteName == null || assetQuoteName.length() == 0) {</b>
+<b class="fc"><i class="no-highlight">152</i>&nbsp;            assetQuoteName = result.shortName;</b>
+<i class="no-highlight">153</i>&nbsp;          }
+<i class="no-highlight">154</i>&nbsp;
+<b class="fc"><i class="no-highlight">155</i>&nbsp;          AssetQuote assetQuote = new AssetQuote(result.symbol,</b>
+<i class="no-highlight">156</i>&nbsp;              assetQuoteName,
+<i class="no-highlight">157</i>&nbsp;              result.regularMarketTime,
+<i class="no-highlight">158</i>&nbsp;              result.regularMarketPrice,
+<i class="no-highlight">159</i>&nbsp;              result.regularMarketChangePercent,
+<i class="no-highlight">160</i>&nbsp;              result.regularMarketChange,
+<i class="no-highlight">161</i>&nbsp;                  result.quoteType,
+<i class="no-highlight">162</i>&nbsp;                  result.regularMarketPreviousClose,
+<i class="no-highlight">163</i>&nbsp;                  result.regularMarketOpen);
+<i class="no-highlight">164</i>&nbsp;
+<b class="fc"><i class="no-highlight">165</i>&nbsp;          assetQuotes.add(assetQuote);</b>
+<b class="fc"><i class="no-highlight">166</i>&nbsp;        }</b>
+<i class="no-highlight">167</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">168</i>&nbsp;    } catch (Exception ex) {</b>
+<b class="nc"><i class="no-highlight">169</i>&nbsp;      ex.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">170</i>&nbsp;    }</b>
+<b class="fc"><i class="no-highlight">171</i>&nbsp;    return assetQuotes;</b>
+<i class="no-highlight">172</i>&nbsp;  }
+<i class="no-highlight">173</i>&nbsp;
+<i class="no-highlight">174</i>&nbsp;  /**
+<i class="no-highlight">175</i>&nbsp;   * Returns information regarding the specified exchange and region.
+<i class="no-highlight">176</i>&nbsp;   *
+<i class="no-highlight">177</i>&nbsp;   * @param region region where exchange is located.
+<i class="no-highlight">178</i>&nbsp;   * @param exchange the exchange to return data on.
+<i class="no-highlight">179</i>&nbsp;   * @return A string containing relevant information
+<i class="no-highlight">180</i>&nbsp;   */
+<i class="no-highlight">181</i>&nbsp;  public String getExchangeInfo(String region, String exchange) {
+<i class="no-highlight">182</i>&nbsp;
+<b class="fc"><i class="no-highlight">183</i>&nbsp;    String operation = &quot;/v6/finance/quote&quot;;</b>
+<b class="fc"><i class="no-highlight">184</i>&nbsp;    String parameters = &quot;region=&quot; + region + &quot;&amp;lang=en&amp;symbols=&quot; + exchange;</b>
+<b class="fc"><i class="no-highlight">185</i>&nbsp;    String url = baseUrl + operation + &quot;?&quot; + parameters;</b>
+<b class="fc"><i class="no-highlight">186</i>&nbsp;    Response response = makeGetRequest(url);</b>
+<b class="fc"><i class="no-highlight">187</i>&nbsp;    ResponseBody responseBody = response.body();</b>
+<b class="fc"><i class="no-highlight">188</i>&nbsp;    AssetQuote assetQuote = null;</b>
+<i class="no-highlight">189</i>&nbsp;
+<i class="no-highlight">190</i>&nbsp;    // Parse the response and return a quote
+<b class="fc"><i class="no-highlight">191</i>&nbsp;    ObjectMapper om = new ObjectMapper();</b>
+<i class="no-highlight">192</i>&nbsp;    try {
+<b class="fc"><i class="no-highlight">193</i>&nbsp;      Root root = om.readValue(responseBody.string(), Root.class);</b>
+<i class="no-highlight">194</i>&nbsp;
+<b class="fc"><i class="no-highlight">195</i>&nbsp;      if (root.quoteResponse != null) {</b>
+<b class="nc"><i class="no-highlight">196</i>&nbsp;        for (Result result : root.quoteResponse.result) {</b>
+<b class="nc"><i class="no-highlight">197</i>&nbsp;          assetQuote = new AssetQuote(result.symbol,</b>
+<i class="no-highlight">198</i>&nbsp;                  result.fullExchangeName,
+<i class="no-highlight">199</i>&nbsp;                  result.regularMarketTime,
+<i class="no-highlight">200</i>&nbsp;                  result.regularMarketPrice,
+<i class="no-highlight">201</i>&nbsp;                  result.regularMarketChangePercent,
+<i class="no-highlight">202</i>&nbsp;                  result.regularMarketChange,
+<i class="no-highlight">203</i>&nbsp;                  result.quoteType,
+<i class="no-highlight">204</i>&nbsp;                  result.regularMarketPreviousClose,
+<i class="no-highlight">205</i>&nbsp;                  result.regularMarketOpen);
+<b class="nc"><i class="no-highlight">206</i>&nbsp;        }</b>
+<i class="no-highlight">207</i>&nbsp;      }
+<b class="nc"><i class="no-highlight">208</i>&nbsp;    } catch (Exception ex) {</b>
+<b class="nc"><i class="no-highlight">209</i>&nbsp;      ex.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">210</i>&nbsp;    }</b>
+<b class="fc"><i class="no-highlight">211</i>&nbsp;    if (assetQuote != null) {</b>
+<b class="nc"><i class="no-highlight">212</i>&nbsp;      return assetQuote.exchangeToString();</b>
+<i class="no-highlight">213</i>&nbsp;    } else {
+<b class="fc"><i class="no-highlight">214</i>&nbsp;      return null;</b>
+<i class="no-highlight">215</i>&nbsp;    }
+<i class="no-highlight">216</i>&nbsp;  }
+<i class="no-highlight">217</i>&nbsp;
+<i class="no-highlight">218</i>&nbsp;  /**
+<i class="no-highlight">219</i>&nbsp;   * Returns a list of popular stocks by region.
+<i class="no-highlight">220</i>&nbsp;   *
+<i class="no-highlight">221</i>&nbsp;   * @param region region for which trending stock data is to be retrieved.
+<i class="no-highlight">222</i>&nbsp;   * @return An ArrayList of strings, containing the most popular stock tickers.
+<i class="no-highlight">223</i>&nbsp;   */
+<i class="no-highlight">224</i>&nbsp;  public ArrayList&lt;String&gt; getTrendingStocksForRegion(String region) {
+<b class="fc"><i class="no-highlight">225</i>&nbsp;    String operation = &quot;/v1/finance/trending/&quot;;</b>
+<b class="fc"><i class="no-highlight">226</i>&nbsp;    String url = baseUrl + operation + region;</b>
+<b class="fc"><i class="no-highlight">227</i>&nbsp;    Response response = makeGetRequest(url);</b>
+<b class="fc"><i class="no-highlight">228</i>&nbsp;    ResponseBody responseBody = response.body();</b>
+<i class="no-highlight">229</i>&nbsp;
+<i class="no-highlight">230</i>&nbsp;    // Parse the response and return a quote
+<b class="fc"><i class="no-highlight">231</i>&nbsp;    ObjectMapper om = new ObjectMapper();</b>
+<b class="fc"><i class="no-highlight">232</i>&nbsp;    ArrayList&lt;String&gt; trendingAssetsList = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">233</i>&nbsp;
+<i class="no-highlight">234</i>&nbsp;    try {
+<b class="fc"><i class="no-highlight">235</i>&nbsp;      com.lyit.csd.marketapi.yahoo.trending.Root root = om.readValue(responseBody.string(),</b>
+<i class="no-highlight">236</i>&nbsp;          com.lyit.csd.marketapi.yahoo.trending.Root.class);
+<i class="no-highlight">237</i>&nbsp;
+<b class="fc"><i class="no-highlight">238</i>&nbsp;      for (var result : root.finance.result) {</b>
+<b class="fc"><i class="no-highlight">239</i>&nbsp;        for (var quote : result.quotes) {</b>
+<b class="fc"><i class="no-highlight">240</i>&nbsp;          trendingAssetsList.add(removeNonAlphanumeric(quote.symbol));</b>
+<b class="fc"><i class="no-highlight">241</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">242</i>&nbsp;      }</b>
+<i class="no-highlight">243</i>&nbsp;
+<b class="nc"><i class="no-highlight">244</i>&nbsp;    } catch (Exception ex) {</b>
+<b class="nc"><i class="no-highlight">245</i>&nbsp;      ex.printStackTrace();</b>
+<b class="fc"><i class="no-highlight">246</i>&nbsp;    }</b>
+<i class="no-highlight">247</i>&nbsp;
+<b class="fc"><i class="no-highlight">248</i>&nbsp;    return trendingAssetsList;</b>
+<i class="no-highlight">249</i>&nbsp;  }
+<i class="no-highlight">250</i>&nbsp;
+<i class="no-highlight">251</i>&nbsp;  /**
+<i class="no-highlight">252</i>&nbsp;   * Removes special characters from given string.
+<i class="no-highlight">253</i>&nbsp;   *
+<i class="no-highlight">254</i>&nbsp;   * @param str string of mixed characters
+<i class="no-highlight">255</i>&nbsp;   * @return string containing only alphanumerics.
+<i class="no-highlight">256</i>&nbsp;   */
+<i class="no-highlight">257</i>&nbsp;  public static String removeNonAlphanumeric(String str) {
+<i class="no-highlight">258</i>&nbsp;    // replace the given string with empty string except the pattern &quot;[^a-zA-Z0-9]&quot;
+<b class="fc"><i class="no-highlight">259</i>&nbsp;    str = str.replaceAll(</b>
+<i class="no-highlight">260</i>&nbsp;        &quot;[^a-zA-Z0-9]&quot;, &quot;&quot;);
+<i class="no-highlight">261</i>&nbsp;
+<b class="fc"><i class="no-highlight">262</i>&nbsp;    return str;</b>
+<i class="no-highlight">263</i>&nbsp;  }
+<i class="no-highlight">264</i>&nbsp;
+<i class="no-highlight">265</i>&nbsp;  /**
+<i class="no-highlight">266</i>&nbsp;   * Method to make get request from API.
+<i class="no-highlight">267</i>&nbsp;   *
+<i class="no-highlight">268</i>&nbsp;   * @param url target url containing operation to be performed.
+<i class="no-highlight">269</i>&nbsp;   * @return a http response object
+<i class="no-highlight">270</i>&nbsp;   */
+<i class="no-highlight">271</i>&nbsp;  public Response makeGetRequest(String url) {
+<b class="fc"><i class="no-highlight">272</i>&nbsp;    OkHttpClient client = new OkHttpClient().newBuilder()</b>
+<b class="fc"><i class="no-highlight">273</i>&nbsp;        .build();</b>
+<b class="fc"><i class="no-highlight">274</i>&nbsp;    Request request = new Request.Builder()</b>
+<b class="fc"><i class="no-highlight">275</i>&nbsp;        .url(url)</b>
+<b class="fc"><i class="no-highlight">276</i>&nbsp;        .method(&quot;GET&quot;, null)</b>
+<b class="fc"><i class="no-highlight">277</i>&nbsp;        .addHeader(&quot;X-API-KEY&quot;, apiKey)</b>
+<b class="fc"><i class="no-highlight">278</i>&nbsp;        .build();</b>
+<i class="no-highlight">279</i>&nbsp;    try {
+<b class="fc"><i class="no-highlight">280</i>&nbsp;      return client.newCall(request).execute();</b>
+<b class="nc"><i class="no-highlight">281</i>&nbsp;    } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">282</i>&nbsp;      e.printStackTrace();</b>
+<i class="no-highlight">283</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">284</i>&nbsp;    return null;</b>
+<i class="no-highlight">285</i>&nbsp;  }
+<i class="no-highlight">286</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-02-20 19:10</div>
+</div>
+</body>
+</html>
