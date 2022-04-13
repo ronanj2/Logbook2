@@ -4,6 +4,8 @@
 
 plugins {
     java
+    `java-library`
+    //id("org.ajoberstar.github-pages") version "3.0.1"
 }
 
 java {
@@ -32,24 +34,20 @@ repositories {
 }
 
 allprojects {
-    tasks.withType<Test> {
-        maxParallelForks = 4
-    }
-
     tasks.withType<Javadoc> {
         println("in tasks.withType<Javadoc>")
         options.encoding = "UTF-8"
         isFailOnError = false
         options {
-        (this as StandardJavadocDocletOptions).apply {
-            addBooleanOption("html5", true)
-            //stylesheetFile(File("${rootDir}/src/main/javadoc/assertj-javadoc.css"))
-            addBooleanOption("-allow-script-in-comments", true)
-            header("<script src=\"http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js\"></script>")
-            footer("<script type=\"text/javascript\">hljs.initHighlightingOnLoad();</script>")
-            tags("apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:", "sneaky:a:Sneaky Throws:")
+            (this as StandardJavadocDocletOptions).apply {
+                addBooleanOption("html5", true)
+                //stylesheetFile(File("${rootDir}/src/main/javadoc/assertj-javadoc.css"))
+                addBooleanOption("-allow-script-in-comments", true)
+                header("<script src=\"http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js\"></script>")
+                footer("<script type=\"text/javascript\">hljs.initHighlightingOnLoad();</script>")
+                tags("apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:", "sneaky:a:Sneaky Throws:")
+            }
         }
-    }
     }
 
     repositories {
@@ -65,10 +63,18 @@ dependencies {
     implementation("org.testng:testng:7.5")
     implementation("org.slf4j:slf4j-api:1.7.36")
     implementation("org.slf4j:slf4j-simple:1.7.36")
+    implementation("org.ajoberstar.git-publish:gradle-git-publish:4.1.0")
+    //testImplementation("org.testng:testng:6.14.3")
 }
 
 tasks.named<Test>("test") {
-    useTestNG()
+    println("in tasks.named<Test>(test)")
+    testLogging.showStandardStreams = true
+    testLogging.events("passed", "failed", "skipped")
+    useTestNG() {
+        useDefaultListeners = true
+        suites("testng-unittests.xml")
+    }
 }
 
 tasks.register<Javadoc>("generateJavadoc") {
