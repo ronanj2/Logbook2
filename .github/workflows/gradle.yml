@@ -19,16 +19,16 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
         
-      # Run the build using gradle
+      # Build the code
       - name: Build
         run: ./gradlew build -x test
 
-      # Run the build using gradle
+      # Run the tests
       - name: Run Tests
         run: ./gradlew clean test
 
-      # Publish Javadoc to GitHub pages
-      - name: Publish JavaDoc
+      # Publish Javadoc to GitHub pages (branch gh-pages)
+      - name: Publish JavaDoc to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
