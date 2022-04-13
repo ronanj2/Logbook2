@@ -22,3 +22,10 @@ jobs:
       # Run the build using gradle
       - name: Building with Gradle
         run: ./gradlew build
+
+      # Publish Javadoc to GitHub pages
+      - name: Publish JavaDoc
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/docs/javadoc
