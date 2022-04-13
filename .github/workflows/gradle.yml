@@ -20,8 +20,12 @@ jobs:
         run: chmod +x ./gradlew
         
       # Run the build using gradle
-      - name: Building with Gradle
-        run: ./gradlew build
+      - name: Build
+        run: ./gradlew build -x test
+
+      # Run the build using gradle
+      - name: Run Tests
+        run: ./gradlew clean test
 
       # Publish Javadoc to GitHub pages
       - name: Publish JavaDoc
