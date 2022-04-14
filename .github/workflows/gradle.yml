@@ -27,9 +27,13 @@ jobs:
       - name: Run Tests
         run: ./gradlew clean test
 
+      # Generate Javadoc
+      - name: Run Tests
+        run: ./gradlew generateJavadoc
+
       # Publish Javadoc to GitHub pages (branch gh-pages)
       - name: Publish JavaDoc to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: /build/docs/javadoc
+          publish_dir: ./build/docs/javadoc
