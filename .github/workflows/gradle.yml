@@ -31,6 +31,14 @@ jobs:
       - name: Run Tests
         run: ./gradlew generateJavadoc
 
+      # Need to see whats in the output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: backend-package
+          path: ${{ github.workspace }}/**/*
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+          retention-days: 3 # Set low because I want to stay inside the limits of the free tier.
+
       # Publish Javadoc to GitHub pages (branch gh-pages)
       - name: Publish JavaDoc to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
