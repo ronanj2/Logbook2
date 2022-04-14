@@ -1,8 +1,0 @@
-com.lyit.csd.app
-com.lyit.csd.domain
-com.lyit.csd.marketapi
-com.lyit.csd.marketapi.abstraction
-com.lyit.csd.marketapi.mock
-com.lyit.csd.marketapi.yahoo
-com.lyit.csd.marketapi.yahoo.quote
-com.lyit.csd.marketapi.yahoo.trending
