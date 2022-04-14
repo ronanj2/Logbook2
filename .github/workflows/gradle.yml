@@ -20,20 +20,25 @@ jobs:
         run: chmod +x ./gradlew
         
       # Build the code
-      #- name: Build
-      #  run: ./gradlew build -x test
+      - name: Build
+        run: ./gradlew build -x test
 
-      # Run the tests
-      #- name: Run Tests
-      #  run: ./gradlew clean test
+      - name: Run Tests
+        run: ./gradlew clean test
 
-      # Generate Javadoc
-      #- name: Run Tests
-      #  run: ./gradlew generateJavadoc
+      - name: Generate Javadoc
+        run: ./gradlew generateJavadoc
 
       # Build, test and create Javadoc
-      - name: Build
-        run: ./gradlew build
+      #- name: Build
+      #  run: ./gradlew build
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: backend-package
+          path: ${{ github.workspace }}/output/artifact/**/*
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+          retention-days: 3 # Set low because I want to stay inside the limits of the free tier.
 
       # Publish Javadoc to GitHub pages (branch gh-pages)
       - name: Publish JavaDoc to GitHub pages

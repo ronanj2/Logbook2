@@ -78,6 +78,7 @@ tasks.named<Test>("test") {
 }
 
 tasks.register<Javadoc>("generateJavadoc") {
+    dependsOn("build")
     println("Generating JavaDocs")
     source(sourceSets["main"].allJava)
 }
