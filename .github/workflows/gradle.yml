@@ -27,7 +27,9 @@ jobs:
         run: ./gradlew clean test
 
       - name: Generate Javadoc
-        run: ./gradlew generateJavadoc
+        run: |
+          ./gradlew clean
+          ./gradlew generateJavadoc
 
       # Build, test and create Javadoc
       #- name: Build
