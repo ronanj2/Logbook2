@@ -25,16 +25,13 @@ group = "groupId"
 version = "1.0-SNAPSHOT"
 description = "Portfolio"
 
-repositories {
-    mavenLocal()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-}
 
 allprojects {
     repositories {
-        mavenCentral()
+        mavenLocal()
+        maven {
+            url = uri("https://repo.maven.apache.org/maven2/")
+        }
     }
 }
 
