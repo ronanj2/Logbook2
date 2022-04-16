@@ -5,7 +5,6 @@
 plugins {
     java
     `java-library`
-    //id("org.ajoberstar.github-pages") version "3.0.1"
 }
 
 java {
@@ -67,16 +66,15 @@ tasks.withType<Javadoc> {
     options {
         (this as StandardJavadocDocletOptions).apply {
             addBooleanOption("html5", true)
-            //stylesheetFile(File("${rootDir}/src/main/javadoc/assertj-javadoc.css"))
             addBooleanOption("-allow-script-in-comments", true)
             header("<script src=\"http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js\"></script>")
             footer("<script type=\"text/javascript\">hljs.initHighlightingOnLoad();</script>")
-            tags("apiNote:a:API Note:", "implSpec:a:Implementation Requirements:", "implNote:a:Implementation Note:", "sneaky:a:Sneaky Throws:")
         }
     }
 }
 
 tasks.register<Javadoc>("generateJavadoc") {
+    println("tasks.register<Javadoc>(generateJavadoc)")
     dependsOn("build")
     println("Generating JavaDocs")
     source(sourceSets["main"].allJava)

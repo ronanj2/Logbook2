@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - '*'
-  workflow_dispatch:
+  workflow_dispatch:  # Can run workflow manually.
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
-      # We could do it all in one step, if we wanted to:
+      # We could do it all in one step, if we wanted to.
 #       run: ./gradlew build
         
       - name: Build the code and produce Javadoc
@@ -39,22 +39,22 @@ jobs:
 
       # Upload the Javadoc to save having to generate it again later.
       - name: Upload Javadoc artifact
-        if: github.ref == 'refs/heads/main' # We will only publish to GitHub pages if its a push to main
+        if: github.ref == 'refs/heads/main' # We will only publish to GitHub pages if its a push to main.
         uses: actions/upload-artifact@v3
         with:
           name: javadoc
           path: ${{ github.workspace }}/build/docs/javadoc/**/*
-          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
+          if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`.
           retention-days: 60
 
-      # Run the tests
+      # Run the tests.
       - name: Run Tests
         run: ./gradlew clean test
   
   publish-javadoc:
     name: Publish Javadoc to GitHub pages
     needs: build
-    if: github.ref == 'refs/heads/main' # We will only publish to GitHub pages if its a push to main
+    if: github.ref == 'refs/heads/main' # We will only publish to GitHub pages if its a push to main.
 
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -85,7 +85,7 @@ jobs:
           name: javadoc
           path: ${{ github.workspace }}/javadoc/
 
-      # Publish Javadoc to GitHub pages (branch gh-pages)
+      # Publish Javadoc to GitHub pages (branch gh-pages).
       - name: Publish JavaDoc to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
