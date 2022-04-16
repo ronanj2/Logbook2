@@ -43,10 +43,10 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-    implementation("org.testng:testng:7.5")
-    implementation("org.slf4j:slf4j-api:1.7.36")
-    implementation("org.slf4j:slf4j-simple:1.7.36")
-    implementation("org.ajoberstar.git-publish:gradle-git-publish:4.1.0")
+
+    testImplementation("org.testng:testng:7.5")
+    testImplementation("org.slf4j:slf4j-api:1.7.36")
+    testImplementation("org.slf4j:slf4j-simple:1.7.36")
 }
 
 tasks.named<Test>("test") {
