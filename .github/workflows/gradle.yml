@@ -45,7 +45,7 @@ jobs:
           name: javadoc
           path: ${{ github.workspace }}/build/docs/javadoc/**/*
           if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
-          retention-days: 1
+          retention-days: 60
 
       # Run the tests
       - name: Run Tests
