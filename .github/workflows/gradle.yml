@@ -9,6 +9,9 @@ on:
       - '*'
   workflow_dispatch:  # Can run workflow manually.
 
+env:
+  CI: true
+
 jobs:
   build:
     name: Build & Test
@@ -50,6 +53,11 @@ jobs:
       # Run the tests.
       - name: Run Tests
         run: ./gradlew clean test
+
+      # Build scan
+      - name: Perform build scan
+        if: github.ref == 'refs/heads/main'
+        run: ./gradlew build --scan
   
   publish-javadoc:
     name: Publish Javadoc to GitHub pages

@@ -3,3 +3,16 @@
  */
 
 rootProject.name = "Portfolio"
+
+plugins {
+    id("com.gradle.enterprise") version("3.9")
+}
+
+// https://docs.gradle.com/enterprise/gradle-plugin/#connecting_to_scans_gradle_com
+gradleEnterprise {
+    buildScan {
+        publishAlwaysIf(!System.getenv("CI").isNullOrEmpty())
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+    }
+}
