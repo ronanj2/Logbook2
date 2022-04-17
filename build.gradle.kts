@@ -3,8 +3,8 @@
  */
 
 plugins {
-    java
-    `java-library`
+    application
+    //java
 }
 
 java {
@@ -12,6 +12,11 @@ java {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
     withJavadocJar()
+}
+
+application {
+    // Define the main class for this application
+    mainClass.set("com.lyit.csd.app.Main")
 }
 
 sourceSets {
@@ -75,4 +80,8 @@ tasks.register<Javadoc>("generateJavadoc") {
     dependsOn("build")
     println("Generating JavaDocs")
     source(sourceSets["main"].allJava)
+}
+
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
 }
