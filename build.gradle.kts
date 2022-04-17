@@ -4,7 +4,6 @@
 
 plugins {
     application
-    //java
 }
 
 java {
@@ -30,18 +29,14 @@ group = "groupId"
 version = "1.0-SNAPSHOT"
 description = "Portfolio"
 
-
 allprojects {
     repositories {
-        mavenLocal()
-        maven {
-            url = uri("https://repo.maven.apache.org/maven2/")
-        }
+        mavenCentral()
     }
 }
 
 dependencies {
-    implementation("org.json:json:20220320")
+    implementation("org.json:json:20211205")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
@@ -80,8 +75,4 @@ tasks.register<Javadoc>("generateJavadoc") {
     dependsOn("build")
     println("Generating JavaDocs")
     source(sourceSets["main"].allJava)
-}
-
-tasks.named<JavaExec>("run") {
-    standardInput = System.`in`
 }
