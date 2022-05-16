@@ -39,7 +39,7 @@ dependencies {
     implementation("org.json:json:20220320")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 
     testImplementation("org.testng:testng:7.5")
     testImplementation("org.slf4j:slf4j-api:1.7.36")
