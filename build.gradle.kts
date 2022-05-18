@@ -41,7 +41,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
 
-    testImplementation("org.testng:testng:7.5")
+    testImplementation("org.testng:testng:7.6.0")
     testImplementation("org.slf4j:slf4j-api:1.7.36")
     testImplementation("org.slf4j:slf4j-simple:1.7.36")
 }
